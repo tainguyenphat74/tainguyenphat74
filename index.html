@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tai Nguyen Phat - Product Engineer</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@300;400;500;600;700&family=Orbitron:wght@400;700;900&display=swap');
+        
         * {
             margin: 0;
             padding: 0;
@@ -12,28 +14,94 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            font-family: 'Source Code Pro', monospace;
             line-height: 1.6;
-            color: #333;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #e8eaed;
+            background: linear-gradient(135deg, #0f1419 0%, #1a1f2e 50%, #0f1419 100%);
             min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Matrix rain background */
+        #matrix-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        /* CRT scanlines effect */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 2px,
+                rgba(0, 255, 65, 0.03) 2px,
+                rgba(0, 255, 65, 0.03) 4px
+            );
+            pointer-events: none;
+            z-index: 1000;
+        }
+
+        /* Subtle glow effects */
+        @keyframes subtleGlow {
+            0%, 100% { 
+                text-shadow: 0 0 10px rgba(100, 180, 255, 0.5);
+            }
+            50% { 
+                text-shadow: 0 0 15px rgba(100, 180, 255, 0.8);
+            }
+        }
+
+        @keyframes glitch {
+            0% { transform: translate(0); }
+            20% { transform: translate(-2px, 2px); }
+            40% { transform: translate(-2px, -2px); }
+            60% { transform: translate(2px, 2px); }
+            80% { transform: translate(2px, -2px); }
+            100% { transform: translate(0); }
+        }
+
+        @keyframes cursor {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+
+        .cursor::after {
+            content: '_';
+            animation: cursor 1s infinite;
+            color: #64b4ff;
         }
 
         .container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 0 20px;
+            position: relative;
+            z-index: 10;
         }
 
+        /* Terminal header */
         header {
-            background: rgba(255, 255, 255, 0.95);
+            background: rgba(0, 0, 0, 0.95);
             backdrop-filter: blur(10px);
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
-            z-index: 1000;
-            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+            z-index: 1001;
+            border-bottom: 2px solid #00ff41;
+            box-shadow: 0 0 20px rgba(0, 255, 65, 0.3);
         }
 
         nav {
@@ -44,9 +112,16 @@
         }
 
         .logo {
+            font-family: 'Orbitron', monospace;
             font-size: 1.5rem;
-            font-weight: bold;
-            color: #667eea;
+            font-weight: 700;
+            color: #00ff41;
+            animation: textGlow 2s ease-in-out infinite;
+            text-decoration: none;
+        }
+
+        .logo:hover {
+            animation: glitch 0.3s ease-in-out;
         }
 
         .nav-links {
@@ -56,192 +131,421 @@
         }
 
         .nav-links a {
+            color: #e8eaed;
             text-decoration: none;
-            color: #333;
             font-weight: 500;
-            transition: color 0.3s ease;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            transition: all 0.3s ease;
         }
 
         .nav-links a:hover {
-            color: #667eea;
+            background: rgba(100, 180, 255, 0.1);
+            color: #64b4ff;
+        }
+
+        .terminal-nav {
+            display: none;
         }
 
         .hero {
             padding: 120px 0 80px;
             text-align: center;
-            color: white;
+            color: #e8eaed;
+            position: relative;
+            background: radial-gradient(circle at center, rgba(100, 180, 255, 0.1) 0%, transparent 70%);
+        }
+
+        .code-art {
+            font-family: 'Source Code Pro', monospace;
+            font-size: 1rem;
+            line-height: 1.4;
+            color: #64b4ff;
+            background: rgba(15, 20, 25, 0.8);
+            border: 1px solid #64b4ff;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 0 auto 2rem;
+            max-width: 600px;
+            text-align: left;
         }
 
         .hero h1 {
-            font-size: 3.5rem;
+            font-family: 'Orbitron', monospace;
+            font-size: 3rem;
             margin-bottom: 1rem;
             font-weight: 700;
+            color: #64b4ff;
+            text-shadow: 0 0 20px rgba(100, 180, 255, 0.3);
         }
 
         .hero .subtitle {
-            font-size: 1.3rem;
+            font-family: 'Source Code Pro', monospace;
+            font-size: 1.2rem;
             margin-bottom: 2rem;
-            opacity: 0.9;
+            color: #a8b3cf;
+            font-weight: 400;
         }
 
         .hero .description {
             font-size: 1.1rem;
             max-width: 600px;
             margin: 0 auto 2rem;
-            opacity: 0.8;
+            line-height: 1.8;
+            color: #e8eaed;
+            opacity: 0.9;
+        }
+
+        .system-status {
+            background: rgba(100, 180, 255, 0.1);
+            border: 1px solid #64b4ff;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px auto;
+            font-family: 'Source Code Pro', monospace;
+            font-size: 0.9rem;
+            max-width: 500px;
+        }
+
+        .status-line {
+            margin: 8px 0;
+            display: flex;
+            align-items: center;
+        }
+
+        .status-ok {
+            color: #4ade80;
+        }
+
+        .status-ok::before {
+            content: '✓ ';
+            margin-right: 8px;
+        }
+
+        .status-warn {
+            color: #fbbf24;
+        }
+
+        .status-warn::before {
+            content: '⚠ ';
+            margin-right: 8px;
+        }
+
+        .status-info {
+            color: #64b4ff;
+        }
+
+        .status-info::before {
+            content: 'ℹ ';
+            margin-right: 8px;
         }
 
         .cta-button {
             display: inline-block;
-            background: rgba(255, 255, 255, 0.2);
-            color: white;
+            background: #64b4ff;
+            color: #ffffff;
             padding: 12px 30px;
             text-decoration: none;
-            border-radius: 50px;
-            border: 2px solid rgba(255, 255, 255, 0.3);
+            border: 2px solid #64b4ff;
+            border-radius: 8px;
+            font-family: 'Source Code Pro', monospace;
             font-weight: 600;
             transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
         }
 
         .cta-button:hover {
-            background: rgba(255, 255, 255, 0.3);
+            background: #85c5ff;
             transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(100, 180, 255, 0.4);
         }
 
         .section {
             padding: 80px 0;
-            background: white;
+            background: rgba(15, 20, 25, 0.8);
+            position: relative;
         }
 
         .section:nth-child(even) {
-            background: #f8f9ff;
+            background: rgba(20, 25, 35, 0.8);
         }
 
         .section h2 {
             text-align: center;
+            font-family: 'Orbitron', monospace;
             font-size: 2.5rem;
             margin-bottom: 3rem;
-            color: #333;
+            color: #64b4ff;
+            text-shadow: 0 0 15px rgba(100, 180, 255, 0.3);
         }
 
         .about-content {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 4rem;
-            align-items: center;
+            grid-template-columns: 1fr 2fr;
+            gap: 3rem;
+            position: relative;
+            z-index: 10;
+            align-items: start;
         }
 
         .about-text {
             font-size: 1.1rem;
             line-height: 1.8;
+            color: #e8eaed;
+        }
+
+        .hacker-profile {
+            background: rgba(100, 180, 255, 0.1);
+            border: 1px solid #64b4ff;
+            border-radius: 8px;
+            padding: 20px;
+            font-family: 'Source Code Pro', monospace;
+        }
+
+        .profile-line {
+            margin: 10px 0;
+            font-size: 0.9rem;
+        }
+
+        .profile-line span {
+            color: #64b4ff;
+            font-weight: 600;
         }
 
         .skills-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
             margin-top: 2rem;
+            position: relative;
+            z-index: 10;
         }
 
         .skill-card {
-            background: white;
+            background: rgba(15, 20, 25, 0.9);
             padding: 2rem;
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            text-align: center;
-            transition: transform 0.3s ease;
+            border: 1px solid #64b4ff;
+            border-radius: 8px;
+            text-align: left;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
         }
 
         .skill-card:hover {
             transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(100, 180, 255, 0.2);
+            border-color: #85c5ff;
         }
 
         .skill-card h3 {
-            color: #667eea;
+            color: #64b4ff;
             margin-bottom: 1rem;
+            font-family: 'Orbitron', monospace;
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        .skill-card p {
+            color: #e8eaed;
+            font-size: 1rem;
+            line-height: 1.6;
+            opacity: 0.9;
         }
 
         .projects-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 1.5rem;
             margin-top: 2rem;
+            position: relative;
+            z-index: 10;
         }
 
         .project-card {
-            background: white;
-            border-radius: 10px;
+            background: rgba(15, 20, 25, 0.9);
+            border: 1px solid #64b4ff;
+            border-radius: 8px;
             overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .project-header {
+            background: rgba(100, 180, 255, 0.1);
+            padding: 12px 20px;
+            border-bottom: 1px solid #64b4ff;
+            font-size: 0.9rem;
+            color: #64b4ff;
+            font-weight: 600;
         }
 
         .project-card:hover {
             transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(100, 180, 255, 0.2);
+            border-color: #85c5ff;
         }
 
         .project-content {
             padding: 2rem;
+            position: relative;
+            z-index: 10;
         }
 
         .project-content h3 {
-            color: #333;
+            color: #64b4ff;
             margin-bottom: 1rem;
+            font-family: 'Orbitron', monospace;
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+
+        .project-status {
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            color: #a8b3cf;
+            font-family: 'Source Code Pro', monospace;
         }
 
         .project-content p {
             margin-bottom: 1.5rem;
-            opacity: 0.8;
+            color: #e8eaed;
+            line-height: 1.6;
+            font-size: 1rem;
+            opacity: 0.9;
         }
 
         .project-link {
-            color: #667eea;
+            color: #ffffff;
+            background: #64b4ff;
             text-decoration: none;
             font-weight: 600;
+            transition: all 0.3s ease;
+            border: 2px solid #64b4ff;
+            padding: 8px 16px;
+            border-radius: 5px;
+            display: inline-block;
+            font-family: 'Source Code Pro', monospace;
+        }
+
+        .project-link:hover {
+            background: #85c5ff;
+            border-color: #85c5ff;
+            transform: translateY(-1px);
         }
 
         .social-links {
             display: flex;
             justify-content: center;
-            gap: 2rem;
+            gap: 1.5rem;
             margin-top: 2rem;
+            position: relative;
+            z-index: 10;
         }
 
         .social-link {
             display: inline-block;
-            width: 50px;
-            height: 50px;
-            background: #667eea;
-            color: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            padding: 12px 20px;
+            background: #64b4ff;
+            color: #ffffff;
+            border: 2px solid #64b4ff;
+            border-radius: 6px;
             text-decoration: none;
-            font-weight: bold;
+            font-family: 'Source Code Pro', monospace;
+            font-weight: 600;
             transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            font-size: 0.9rem;
         }
 
         .social-link:hover {
-            background: #764ba2;
-            transform: translateY(-3px);
+            background: #85c5ff;
+            border-color: #85c5ff;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(100, 180, 255, 0.3);
         }
 
         footer {
-            background: #333;
-            color: white;
+            background: rgba(15, 20, 25, 0.95);
+            color: #e8eaed;
             text-align: center;
             padding: 2rem 0;
+            border-top: 2px solid #64b4ff;
+            position: relative;
+            font-family: 'Source Code Pro', monospace;
+            font-size: 0.9rem;
+        }
+
+        .footer-content {
+            background: rgba(100, 180, 255, 0.1);
+            border: 1px solid #64b4ff;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 0 20px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .footer-content p {
+            margin: 8px 0;
+        }
+
+        .footer-content p:first-child {
+            color: #64b4ff;
+            font-weight: 600;
+        }
+
+        /* Hacking sequences */
+        .hacking-sequence {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 300px;
+            height: 400px;
+            background: rgba(0, 0, 0, 0.9);
+            border: 1px solid #00ff41;
+            border-radius: 5px;
+            padding: 10px;
+            font-family: 'Source Code Pro', monospace;
+            font-size: 0.7rem;
+            color: #00ff41;
+            overflow: hidden;
+            z-index: 999;
+        }
+
+        .sequence-header {
+            color: #00ffff;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #00ff41;
+            padding-bottom: 5px;
+        }
+
+        .sequence-line {
+            margin: 2px 0;
+            opacity: 0;
+            animation: fadeIn 0.1s ease-in forwards;
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+        @keyframes typing {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+
+        .typing-animation {
+            overflow: hidden;
+            white-space: nowrap;
+            animation: typing 3s steps(40, end);
         }
 
         @media (max-width: 768px) {
-            .nav-links {
-                display: none;
-            }
-
             .hero h1 {
-                font-size: 2.5rem;
+                font-size: 2rem;
             }
 
             .about-content {
@@ -256,12 +560,28 @@
 
             .social-links {
                 flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .code-art {
+                font-size: 0.8rem;
+                padding: 15px;
+            }
+
+            .system-status {
+                font-size: 0.8rem;
             }
         }
     </style>
     <link rel="stylesheet" href="https://userchatbox-widget.vercel.app/userchatbox-widget.min.css">
 </head>
 <body>
+    <canvas id="matrix-bg"></canvas>
+
     <header>
         <nav class="container">
             <div class="logo">Tai Nguyen Phat</div>
@@ -277,12 +597,29 @@
 
     <section id="home" class="hero">
         <div class="container">
+            <div class="code-art">
+const productEngineer = {<br>
+&nbsp;&nbsp;name: "Tai Nguyen Phat",<br>
+&nbsp;&nbsp;role: "Product Engineer",<br>
+&nbsp;&nbsp;location: "Vietnam",<br>
+&nbsp;&nbsp;passion: "Building innovative solutions",<br>
+&nbsp;&nbsp;focus: ["User Experience", "Technical Excellence", "Product Strategy"]<br>
+};
+            </div>
             <h1>Tai Nguyen Phat</h1>
-            <p class="subtitle">Product Engineer</p>
+            <p class="subtitle">Product Engineer | Full-Stack Developer | Innovation Builder</p>
+            
+            <div class="system-status">
+                <div class="status-line status-ok">Frontend: React, Vue.js, TypeScript</div>
+                <div class="status-line status-ok">Backend: Node.js, Python, Java</div>
+                <div class="status-line status-info">Cloud: AWS, Docker, Kubernetes</div>
+                <div class="status-line status-ok">Database: PostgreSQL, MongoDB, Redis</div>
+            </div>
+            
             <p class="description">
-                Passionate about building innovative products that solve real-world problems. 
-                I bridge the gap between technical excellence and user experience to create 
-                meaningful solutions that drive business growth.
+                I'm a Product Engineer passionate about building innovative solutions that bridge the gap between 
+                technical capabilities and user needs. With expertise in full-stack development and product strategy, 
+                I create products that make a real impact.
             </p>
             <a href="#about" class="cta-button">Learn More About Me</a>
         </div>
@@ -292,30 +629,30 @@
         <div class="container">
             <h2>About Me</h2>
             <div class="about-content">
-                <div class="about-text">
-                    <p>
-                        As a Product Engineer, I combine technical expertise with product thinking 
-                        to build solutions that truly matter. My approach focuses on understanding 
-                        user needs, identifying market opportunities, and delivering scalable 
-                        technical solutions.
-                    </p>
-                    <p>
-                        I believe in the power of cross-functional collaboration and data-driven 
-                        decision making. Whether it's architecting backend systems, designing 
-                        user interfaces, or analyzing product metrics, I bring a holistic 
-                        perspective to every project.
-                    </p>
+                <div class="hacker-profile">
+                    <div class="profile-line"><span>Name:</span> Tai Nguyen Phat</div>
+                    <div class="profile-line"><span>Role:</span> Product Engineer</div>
+                    <div class="profile-line"><span>Location:</span> Vietnam</div>
+                    <div class="profile-line"><span>Experience:</span> Full-Stack Development</div>
+                    <div class="profile-line"><span>Focus:</span> Product Strategy & User Experience</div>
+                    <div class="profile-line"><span>GitHub:</span> tainguyenphat74</div>
                 </div>
+                
                 <div class="about-text">
                     <p>
-                        My journey in product engineering has taught me that the best products 
-                        are built when technical capabilities align perfectly with user needs 
-                        and business objectives.
+                        I'm a Product Engineer passionate about building innovative solutions that bridge the gap between 
+                        technical capabilities and user needs. My journey combines deep technical expertise with product 
+                        strategy to create meaningful impact.
                     </p>
                     <p>
-                        I'm always eager to take on new challenges, learn emerging technologies, 
-                        and collaborate with talented teams to build products that make a 
-                        positive impact.
+                        With experience in both frontend and backend development, I specialize in React, Vue.js, Node.js, 
+                        and cloud technologies. I believe the best products are built when technical capabilities align 
+                        perfectly with user needs and business objectives.
+                    </p>
+                    <p>
+                        Currently focused on building products that solve real problems, with a keen interest in 
+                        AI/ML integration, user research, and product-led growth strategies. Always eager to learn 
+                        and collaborate on projects that make a difference.
                     </p>
                 </div>
             </div>
@@ -324,31 +661,31 @@
 
     <section id="skills" class="section">
         <div class="container">
-            <h2>Skills & Expertise</h2>
+            <h2>Technical Skills</h2>
             <div class="skills-grid">
                 <div class="skill-card">
+                    <h3>Frontend Development</h3>
+                    <p>React, Vue.js, TypeScript, HTML5, CSS3, responsive design, and modern frontend frameworks. Building user interfaces that are both beautiful and functional.</p>
+                </div>
+                <div class="skill-card">
+                    <h3>Backend Development</h3>
+                    <p>Node.js, Python, Java, RESTful APIs, microservices architecture, and server-side development. Creating scalable and maintainable backend systems.</p>
+                </div>
+                <div class="skill-card">
+                    <h3>Database Management</h3>
+                    <p>PostgreSQL, MongoDB, Redis, database design, optimization, and data modeling. Ensuring efficient data storage and retrieval for applications.</p>
+                </div>
+                <div class="skill-card">
+                    <h3>Cloud & DevOps</h3>
+                    <p>AWS, Docker, Kubernetes, CI/CD pipelines, and cloud infrastructure. Deploying and scaling applications in modern cloud environments.</p>
+                </div>
+                <div class="skill-card">
                     <h3>Product Strategy</h3>
-                    <p>Product roadmapping, feature prioritization, market analysis, and user research to drive product decisions.</p>
+                    <p>User research, product roadmapping, feature prioritization, and data-driven decision making. Bridging technical implementation with business objectives.</p>
                 </div>
                 <div class="skill-card">
-                    <h3>Full-Stack Development</h3>
-                    <p>Frontend and backend development using modern frameworks and technologies to build scalable applications.</p>
-                </div>
-                <div class="skill-card">
-                    <h3>Data Analytics</h3>
-                    <p>Product metrics analysis, A/B testing, user behavior tracking, and data-driven optimization.</p>
-                </div>
-                <div class="skill-card">
-                    <h3>System Design</h3>
-                    <p>Architecting scalable systems, microservices design, database optimization, and cloud infrastructure.</p>
-                </div>
-                <div class="skill-card">
-                    <h3>User Experience</h3>
-                    <p>UI/UX design principles, user journey mapping, prototyping, and usability testing.</p>
-                </div>
-                <div class="skill-card">
-                    <h3>Agile Methodology</h3>
-                    <p>Scrum, Kanban, cross-functional collaboration, and iterative product development.</p>
+                    <h3>Emerging Technologies</h3>
+                    <p>AI/ML integration, Web3, blockchain technologies, and exploring new tech trends. Always learning and adapting to the evolving tech landscape.</p>
                 </div>
             </div>
         </div>
@@ -359,33 +696,42 @@
             <h2>Featured Projects</h2>
             <div class="projects-grid">
                 <div class="project-card">
+                    <div class="project-header">🚀 COMMUNICATION PLATFORM</div>
                     <div class="project-content">
-                        <h3>E-commerce Platform</h3>
+                        <h3>UserChatbox</h3>
+                        <div class="project-status">STATUS: LIVE | TECH: React, Node.js, WebSocket</div>
                         <p>
-                            Built a scalable e-commerce platform with microservices architecture, 
-                            real-time inventory management, and advanced analytics dashboard.
+                            A real-time communication platform enabling seamless user interactions. 
+                            Built with modern web technologies, featuring real-time messaging, 
+                            user authentication, and responsive design for optimal user experience.
                         </p>
-                        <a href="#" class="project-link">View Project →</a>
+                        <a href="https://userchatbox-web.vercel.app" target="_blank" class="project-link">View Project</a>
                     </div>
                 </div>
                 <div class="project-card">
+                    <div class="project-header">🎵 PRODUCTIVITY TOOL</div>
                     <div class="project-content">
-                        <h3>Analytics Dashboard</h3>
+                        <h3>ListenFast</h3>
+                        <div class="project-status">STATUS: LIVE | TECH: Vue.js, PWA, Audio API</div>
                         <p>
-                            Developed a comprehensive analytics platform for product teams to 
-                            track KPIs, user behavior, and business metrics in real-time.
+                            An innovative productivity application for audio content consumption. 
+                            Features advanced playback controls, speed adjustment, and offline capabilities. 
+                            Designed to enhance learning and information processing efficiency.
                         </p>
-                        <a href="#" class="project-link">View Project →</a>
+                        <a href="https://listenfast.vercel.app" target="_blank" class="project-link">View Project</a>
                     </div>
                 </div>
                 <div class="project-card">
+                    <div class="project-header">💻 OPEN SOURCE</div>
                     <div class="project-content">
-                        <h3>Mobile App Integration</h3>
+                        <h3>GitHub Repositories</h3>
+                        <div class="project-status">STATUS: ACTIVE | TECH: Various Technologies</div>
                         <p>
-                            Led the integration of web and mobile platforms, implementing 
-                            seamless user experience across all touchpoints.
+                            Collection of open-source projects and contributions spanning multiple technologies. 
+                            Includes experiments with React, Vue.js, Node.js, and emerging technologies. 
+                            Always exploring new solutions and sharing knowledge with the community.
                         </p>
-                        <a href="#" class="project-link">View Project →</a>
+                        <a href="https://github.com/tainguyenphat74" target="_blank" class="project-link">View GitHub</a>
                     </div>
                 </div>
             </div>
@@ -394,51 +740,123 @@
 
     <section id="contact" class="section">
         <div class="container">
-            <h2>Let's Connect</h2>
-            <p style="text-align: center; font-size: 1.1rem; margin-bottom: 2rem;">
-                I'm always interested in discussing new opportunities, innovative projects, 
-                and connecting with fellow product engineers.
-            </p>
-            <div class="social-links">
-                <a href="https://github.com/tainguyenphat74" target="_blank" class="social-link" title="GitHub">GH</a>
-                <a href="https://www.linkedin.com/in/tainguyenphat74/" target="_blank" class="social-link" title="LinkedIn">LI</a>
-                <a href="https://x.com/tainguyenphat74" target="_blank" class="social-link" title="X (Twitter)">X</a>
+            <h2>Get In Touch</h2>
+            <div class="terminal-contact">
+                <div class="system-status">
+                    <div class="status-line status-ok">Status: Available for new opportunities</div>
+                    <div class="status-line status-info">Location: Vietnam (Remote Friendly)</div>
+                    <div class="status-line status-ok">Response Time: Usually within 24 hours</div>
+                    <div class="status-line status-info">Collaboration: Open to interesting projects</div>
+                </div>
+                
+                <p style="margin: 2rem 0; color: #e8eaed; font-family: 'Source Code Pro', monospace; text-align: center; max-width: 600px; margin: 2rem auto;">
+                    I'm always excited to discuss new opportunities, interesting projects, 
+                    and collaborations. Whether you're looking for a Product Engineer 
+                    or want to chat about technology and innovation, feel free to reach out!
+                </p>
+                
+                <div class="social-links">
+                    <a href="https://github.com/tainguyenphat74" target="_blank" class="social-link">GitHub</a>
+                    <a href="https://www.linkedin.com/in/tainguyenphat74/" target="_blank" class="social-link">LinkedIn</a>
+                    <a href="https://x.com/tainguyenphat74" target="_blank" class="social-link">X (Twitter)</a>
+                </div>
             </div>
         </div>
     </section>
 
     <footer>
         <div class="container">
-            <p>&copy; 2024 Tai Nguyen Phat. Product Engineer passionate about building impactful solutions.</p>
+            <div class="footer-content">
+                <p>&copy; 2025 Tai Nguyen Phat | Product Engineer</p>
+                <p>Building innovative solutions that make a difference. Always learning, always growing.</p>
+            </div>
         </div>
     </footer>
 
-    <script src="https://userchatbox-widget.vercel.app/userchatbox-widget.min.js"
-        data-userchatbox-api-key="cust_251128cf37d628295ede017ab623c130f04e965987672abd83c6692630b04ccb"
-    ></script>
     <script>
-        // Smooth scrolling for navigation links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
+        // Subtle background animation
+        function createSubtleBackground() {
+            const canvas = document.getElementById('matrix-bg');
+            const ctx = canvas.getContext('2d');
+            
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            
+            const codes = ['0', '1', '{', '}', '<', '>', '/', '\\'];
+            const particles = [];
+            
+            for (let i = 0; i < 50; i++) {
+                particles.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    char: codes[Math.floor(Math.random() * codes.length)],
+                    speed: 0.5 + Math.random() * 1,
+                    opacity: 0.1 + Math.random() * 0.3
+                });
+            }
+            
+            function animate() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                ctx.font = '16px Source Code Pro';
+                
+                particles.forEach(particle => {
+                    ctx.fillStyle = `rgba(100, 180, 255, ${particle.opacity})`;
+                    ctx.fillText(particle.char, particle.x, particle.y);
+                    
+                    particle.y += particle.speed;
+                    
+                    if (particle.y > canvas.height) {
+                        particle.y = -20;
+                        particle.x = Math.random() * canvas.width;
+                    }
+                });
+                
+                requestAnimationFrame(animate);
+            }
+            
+            animate();
+            
+            window.addEventListener('resize', () => {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            });
+        }
+        
+        // Smooth scrolling for navigation
+        function initSmoothScrolling() {
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
+        }
+        
+        // Header scroll effect
+        function initHeaderEffect() {
+            window.addEventListener('scroll', () => {
+                const header = document.querySelector('header');
+                if (window.scrollY > 100) {
+                    header.style.background = 'rgba(15, 20, 25, 0.98)';
+                    header.style.boxShadow = '0 2px 30px rgba(100, 180, 255, 0.3)';
+                } else {
+                    header.style.background = 'rgba(15, 20, 25, 0.95)';
+                    header.style.boxShadow = '0 2px 20px rgba(100, 180, 255, 0.2)';
                 }
             });
-        });
-
-        // Add scroll effect to header
-        window.addEventListener('scroll', () => {
-            const header = document.querySelector('header');
-            if (window.scrollY > 100) {
-                header.style.background = 'rgba(255, 255, 255, 0.98)';
-            } else {
-                header.style.background = 'rgba(255, 255, 255, 0.95)';
-            }
+        }
+        
+        // Initialize everything when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            createSubtleBackground();
+            initSmoothScrolling();
+            initHeaderEffect();
         });
     </script>
 </body>
