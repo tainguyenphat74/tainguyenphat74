@@ -5,6 +5,7 @@ Software Engineer with 4+ years experience, passionate about building SaaS produ
 ### Projects
 
 - 💭 [feedbackfun](https://feedbackfun.com): A native feedback widget let users chat, request features, report bug, view roadmap directly on your site.
+- 📘 [SwagView](https://swagview.netlify.app/): Explore and visualize your OpenAPI specs in one place — no backend, no login, no setup, secure your data in local storage.
 - 🎧 [ListenFast](https://listenfast.vercel.app): Enhance your listening skills by practicing dictation with real YouTube conversations on our platform.
 
 ### 🤝 Connect With Me
