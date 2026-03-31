@@ -4,6 +4,7 @@ Software Engineer with 4+ years experience, passionate about building SaaS produ
 
 ### Projects
 
+- 🧠 [MyndMap](https://myndmap.vercel.app): An AI-powered mind maps for any topic — share privately with your team or publicly for anyone to explore
 - 💭 [feedbackfun](https://feedbackfun.com): A native feedback widget let users chat, request features, report bug, view roadmap directly on your site.
 - 📘 [SwagView](https://swagview.netlify.app/): Explore and visualize your OpenAPI specs in one place — no backend, no login, no setup.
 - 🎧 [ListenFast](https://listenfast.vercel.app): Enhance your listening skills by practicing dictation with real YouTube conversations on our platform.
