@@ -4,207 +4,131 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tai Nguyen Phat — Product Engineer</title>
-    <meta name="description" content="Product Engineer with 4+ years of experience building scalable SaaS products and intuitive user experiences.">
     
-    <!-- Typography: Bodoni Moda (Serif) & Jost (Sans) -->
+    <!-- Typography: Fira Code & Fira Sans -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&family=Jost:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&family=Fira+Sans:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
-    <!-- Background Fluid Element -->
-    <div class="fluid-bg"></div>
-
-    <header class="glass-nav">
-        <nav class="container">
-            <a href="#" class="logo">TNP<span>.</span></a>
-            <ul class="nav-links">
-                <li><a href="#work">Work</a></li>
-                <li><a href="#about">About</a></li>
-                <li><a href="#contact">Contact</a></li>
-            </ul>
-            <div class="theme-toggle" id="theme-toggle">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="sun-icon"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="moon-icon"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-            </div>
-        </nav>
-    </header>
-
-    <main>
-        <section id="hero" class="hero section">
-            <div class="container">
-                <div class="hero-content reveal">
-                    <span class="eyebrow">Product Engineer & SaaS Builder</span>
-                    <h1 class="display-large">Crafting digital products with <span>precision</span> and <span>purpose.</span></h1>
-                    <p class="hero-description">
-                        I'm Tai Nguyen Phat. With 4+ years of experience, I bridge the gap between engineering and product strategy to build scalable, user-centric solutions.
-                    </p>
-                    <div class="hero-actions">
-                        <a href="#work" class="btn btn-primary">View Projects</a>
-                        <a href="#contact" class="btn btn-secondary">Get in Touch</a>
+<body data-theme="dark">
+    <div class="bento-wrapper">
+        <div class="bento-container">
+            
+            <!-- 1. Intro / Identity -->
+            <section class="bento-item intro">
+                <div class="identity">
+                    <h1 class="name">Tai Nguyen Phat</h1>
+                    <p class="role">Product Engineer</p>
+                    <div class="status">
+                        <span class="status-dot"></span>
+                        Available for new products
                     </div>
                 </div>
-            </div>
-        </section>
-
-        <section id="work" class="section">
-            <div class="container">
-                <div class="section-header reveal">
-                    <h2 class="display-medium">Selected Work</h2>
-                    <p>A collection of products I've built, focused on real-time systems and developer productivity.</p>
+                <p class="bio">
+                    4+ years experience building SaaS. I bridge the gap between engineering and product strategy to deliver high-impact digital tools.
+                </p>
+                <div class="intro-actions">
+                    <a href="mailto:nguyentai2760@gmail.com" class="btn-email">nguyentai2760@gmail.com</a>
                 </div>
+            </section>
 
-                <div class="project-grid">
-                    <!-- Project 1 -->
-                    <article class="project-card reveal">
-                        <div class="project-image">
-                            <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=1200" alt="feedbackfun Project">
-                            <div class="project-overlay">
-                                <span class="badge">SaaS</span>
-                            </div>
-                        </div>
-                        <div class="project-info">
-                            <h3>feedbackfun</h3>
-                            <p>All-in-one native feedback widget for product teams.</p>
-                            <div class="project-tags">
-                                <span>Next.js</span>
-                                <span>Socket.io</span>
-                                <span>Supabase</span>
-                            </div>
-                            <a href="https://feedbackfun.com" target="_blank" class="project-link">View Case Study →</a>
-                        </div>
-                    </article>
-
-                    <!-- Project 2 -->
-                    <article class="project-card reveal">
-                        <div class="project-image">
-                            <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=1200" alt="MyndMap Project">
-                            <div class="project-overlay">
-                                <span class="badge">AI / Tooling</span>
-                            </div>
-                        </div>
-                        <div class="project-info">
-                            <h3>MyndMap</h3>
-                            <p>AI-powered knowledge visualization and mind mapping.</p>
-                            <div class="project-tags">
-                                <span>React</span>
-                                <span>OpenAI</span>
-                                <span>Canvas</span>
-                            </div>
-                            <a href="https://myndmap.vercel.app" target="_blank" class="project-link">Explore Tool →</a>
-                        </div>
-                    </article>
-
-                    <!-- Project 3 -->
-                    <article class="project-card reveal">
-                        <div class="project-image">
-                            <img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&q=80&w=1200" alt="SwagView Project">
-                            <div class="project-overlay">
-                                <span class="badge">Developer Tool</span>
-                            </div>
-                        </div>
-                        <div class="project-info">
-                            <h3>SwagView</h3>
-                            <p>Zero-backend OpenAPI specification visualizer.</p>
-                            <div class="project-tags">
-                                <span>TypeScript</span>
-                                <span>React</span>
-                                <span>OpenAPI</span>
-                            </div>
-                            <a href="https://swagview.netlify.app/" target="_blank" class="project-link">View Demo →</a>
-                        </div>
-                    </article>
-
-                    <!-- Project 4 -->
-                    <article class="project-card reveal">
-                        <div class="project-image">
-                            <img src="https://images.unsplash.com/photo-1478737270239-2f02b77fc618?auto=format&fit=crop&q=80&w=1200" alt="ListenFast Project">
-                            <div class="project-overlay">
-                                <span class="badge">Productivity</span>
-                            </div>
-                        </div>
-                        <div class="project-info">
-                            <h3>ListenFast</h3>
-                            <p>Real-time audio dictation and learning platform.</p>
-                            <div class="project-tags">
-                                <span>Vue.js</span>
-                                <span>Web Audio</span>
-                                <span>PWA</span>
-                            </div>
-                            <a href="https://listenfast.vercel.app" target="_blank" class="project-link">Launch App →</a>
-                        </div>
-                    </article>
+            <!-- 2. Primary Project: feedbackfun -->
+            <article class="bento-item project featured">
+                <div class="item-header">
+                    <span class="category">Featured Product</span>
+                    <a href="https://feedbackfun.com" target="_blank" class="external-link">↗</a>
                 </div>
-            </div>
-        </section>
+                <h3>feedbackfun</h3>
+                <p>Native feedback widget for product teams to chat, request features, and report bugs.</p>
+                <div class="tech-stack">
+                    <span>Next.js</span> <span>Socket.io</span> <span>Supabase</span>
+                </div>
+            </article>
 
-        <section id="about" class="section bg-glass">
-            <div class="container grid-2">
-                <div class="about-content reveal">
-                    <h2 class="display-medium">Beyond the Code</h2>
-                    <p>
-                        As a Product Engineer, I don't just write features; I solve business problems. My philosophy centers on the idea that technical excellence should always serve the user experience.
-                    </p>
-                    <p>
-                        With a deep foundation in both frontend and backend architectures, I specialize in building "live" systems that feel responsive and effortless.
-                    </p>
-                    <div class="stats-grid">
-                        <div class="stat-item">
-                            <span class="stat-number">4+</span>
-                            <span class="stat-label">Years Exp</span>
-                        </div>
-                        <div class="stat-item">
-                            <span class="stat-number">10+</span>
-                            <span class="stat-label">Products Built</span>
-                        </div>
-                        <div class="stat-item">
-                            <span class="stat-number">99%</span>
-                            <span class="stat-label">Uptime Focus</span>
-                        </div>
+            <!-- 3. Skills -->
+            <section class="bento-item skills">
+                <h3>Technical Arsenal</h3>
+                <div class="skill-groups">
+                    <div class="skill-group">
+                        <span class="group-label">Frontend</span>
+                        <p>React, Next.js, Vue.js, TypeScript</p>
+                    </div>
+                    <div class="skill-group">
+                        <span class="group-label">Backend</span>
+                        <p>Node.js, Python, PostgreSQL, Redis</p>
+                    </div>
+                    <div class="skill-group">
+                        <span class="group-label">Product</span>
+                        <p>UX Research, Strategy, Analytics</p>
                     </div>
                 </div>
-                <div class="skills-showcase reveal">
-                    <div class="skill-category">
-                        <h4>Engineering</h4>
-                        <div class="tag-cloud">
-                            <span>TypeScript</span> <span>Next.js</span> <span>Node.js</span> <span>PostgreSQL</span> <span>Redis</span> <span>AWS</span>
-                        </div>
-                    </div>
-                    <div class="skill-category">
-                        <h4>Product</h4>
-                        <div class="tag-cloud">
-                            <span>UX Research</span> <span>Strategy</span> <span>Analytics</span> <span>Rapid Prototyping</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </main>
+            </section>
 
-    <footer class="section">
-        <div class="container footer-grid">
-            <div class="footer-brand">
-                <a href="#" class="logo">TNP<span>.</span></a>
-                <p>Building meaningful products from Vietnam to the world.</p>
+            <!-- 4. Project: MyndMap -->
+            <article class="bento-item project">
+                <div class="item-header">
+                    <span class="category">AI Tooling</span>
+                    <a href="https://myndmap.vercel.app" target="_blank" class="external-link">↗</a>
+                </div>
+                <h3>MyndMap</h3>
+                <p>AI-powered mind mapping and knowledge visualization tool.</p>
+                <div class="tech-stack">
+                    <span>React</span> <span>OpenAI</span> <span>Canvas</span>
+                </div>
+            </article>
+
+            <!-- 5. Location / Time -->
+            <div class="bento-item info-small">
+                <span class="label">Location</span>
+                <p class="value">Vietnam</p>
             </div>
-            <div class="footer-links">
-                <h4>Socials</h4>
-                <ul>
-                    <li><a href="https://github.com/tainguyenphat74" target="_blank">GitHub</a></li>
-                    <li><a href="https://linkedin.com/in/tainguyenphat74" target="_blank">LinkedIn</a></li>
-                    <li><a href="https://x.com/tainguyenphat74" target="_blank">Twitter</a></li>
-                </ul>
+
+            <!-- 6. Project: SwagView -->
+            <article class="bento-item project">
+                <div class="item-header">
+                    <span class="category">Dev Utility</span>
+                    <a href="https://swagview.netlify.app/" target="_blank" class="external-link">↗</a>
+                </div>
+                <h3>SwagView</h3>
+                <p>Zero-backend OpenAPI spec visualizer for developers.</p>
+                <div class="tech-stack">
+                    <span>TypeScript</span> <span>OpenAPI</span>
+                </div>
+            </article>
+
+            <!-- 7. Social Links -->
+            <section class="bento-item socials">
+                <a href="https://github.com/tainguyenphat74" target="_blank" class="social-link">GitHub</a>
+                <a href="https://linkedin.com/in/tainguyenphat74" target="_blank" class="social-link">LinkedIn</a>
+                <a href="https://x.com/tainguyenphat74" target="_blank" class="social-link">Twitter</a>
+            </section>
+
+            <!-- 8. Project: ListenFast -->
+            <article class="bento-item project">
+                <div class="item-header">
+                    <span class="category">Productivity</span>
+                    <a href="https://listenfast.vercel.app" target="_blank" class="external-link">↗</a>
+                </div>
+                <h3>ListenFast</h3>
+                <p>Real-time audio dictation and learning platform.</p>
+                <div class="tech-stack">
+                    <span>Vue.js</span> <span>Web Audio</span>
+                </div>
+            </article>
+
+            <!-- 9. Experience / Stats -->
+            <div class="bento-item info-small">
+                <span class="label">Experience</span>
+                <p class="value">4+ Years</p>
             </div>
-            <div class="footer-contact" id="contact">
-                <h4>Let's Talk</h4>
-                <a href="mailto:nguyentai2760@gmail.com" class="display-small">nguyentai2760@gmail.com</a>
-            </div>
+
         </div>
-        <div class="container footer-bottom">
-            <p>&copy; 2026 Tai Nguyen Phat. Crafted with Vanilla JS.</p>
-        </div>
+    </div>
+
+    <footer class="minimal-footer">
+        <p>&copy; 2026 Tai Nguyen Phat. Structured with Bento.</p>
     </footer>
 
     <script src="main.js"></script>
