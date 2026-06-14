@@ -144,8 +144,50 @@
             color: #64b4ff;
         }
 
+        .nav-links.active {
+            display: flex;
+            flex-direction: column;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.95);
+            padding: 2rem;
+            border-bottom: 2px solid #00ff41;
+            animation: slideDown 0.3s ease-out;
+        }
+
+        @keyframes slideDown {
+            from { transform: translateY(-20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            gap: 5px;
+        }
+
+        .menu-toggle .bar {
+            width: 25px;
+            height: 3px;
+            background-color: #00ff41;
+            transition: all 0.3s ease;
+        }
+
         .terminal-nav {
             display: none;
+        }
+
+        @media (max-width: 768px) {
+            .menu-toggle {
+                display: flex;
+            }
+
+            .nav-links {
+                display: none;
+            }
         }
 
         .hero {
@@ -585,6 +627,11 @@
     <header>
         <nav class="container">
             <div class="logo">Tai Nguyen Phat</div>
+            <div class="menu-toggle" id="mobile-menu">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
             <ul class="nav-links">
                 <li><a href="#home">Home</a></li>
                 <li><a href="#about">About</a></li>
@@ -598,61 +645,63 @@
     <section id="home" class="hero">
         <div class="container">
             <div class="code-art">
-const productEngineer = {<br>
-&nbsp;&nbsp;name: "Tai Nguyen Phat",<br>
-&nbsp;&nbsp;role: "Product Engineer",<br>
-&nbsp;&nbsp;location: "Vietnam",<br>
-&nbsp;&nbsp;passion: "Building innovative solutions",<br>
-&nbsp;&nbsp;focus: ["User Experience", "Technical Excellence", "Product Strategy"]<br>
-};
+    const productEngineer = {<br>
+    &nbsp;&nbsp;name: "Tai Nguyen Phat",<br>
+    &nbsp;&nbsp;role: "Product Engineer",<br>
+    &nbsp;&nbsp;experience: "4+ years",<br>
+    &nbsp;&nbsp;location: "Vietnam",<br>
+    &nbsp;&nbsp;passion: "Building SaaS products that scale",<br>
+    &nbsp;&nbsp;focus: ["Product Strategy", "User Experience", "Technical Excellence"]<br>
+    };
             </div>
             <h1>Tai Nguyen Phat</h1>
-            <p class="subtitle">Product Engineer | Full-Stack Developer | Innovation Builder</p>
-            
+            <p class="subtitle">Product Engineer | Full-Stack Developer | SaaS Builder</p>
+
             <div class="system-status">
-                <div class="status-line status-ok">Frontend: React, Vue.js, TypeScript</div>
-                <div class="status-line status-ok">Backend: Node.js, Python, Java</div>
-                <div class="status-line status-info">Cloud: AWS, Docker, Kubernetes</div>
-                <div class="status-line status-ok">Database: PostgreSQL, MongoDB, Redis</div>
+                <div class="status-line status-ok">Frontend: React, Next.js, Vue.js, TypeScript</div>
+                <div class="status-line status-ok">Backend: Node.js, Python, Supabase, PostgreSQL</div>
+                <div class="status-line status-info">Focus: Building interactive user experiences</div>
+                <div class="status-line status-ok">Status: Crafting innovative digital solutions</div>
             </div>
-            
+
             <p class="description">
-                I'm a Product Engineer passionate about building innovative solutions that bridge the gap between 
-                technical capabilities and user needs. With expertise in full-stack development and product strategy, 
-                I create products that make a real impact.
+                Software Engineer with 4+ years of experience, passionate about building SaaS products. 
+                I bridge the gap between complex technical systems and intuitive user needs to deliver 
+                high-impact solutions.
             </p>
-            <a href="#about" class="cta-button">Learn More About Me</a>
+            <a href="#about" class="cta-button">Access Profile</a>
         </div>
     </section>
 
     <section id="about" class="section">
         <div class="container">
-            <h2>About Me</h2>
+            <h2>System Profile</h2>
             <div class="about-content">
                 <div class="hacker-profile">
                     <div class="profile-line"><span>Name:</span> Tai Nguyen Phat</div>
                     <div class="profile-line"><span>Role:</span> Product Engineer</div>
-                    <div class="profile-line"><span>Location:</span> Vietnam</div>
-                    <div class="profile-line"><span>Experience:</span> Full-Stack Development</div>
-                    <div class="profile-line"><span>Focus:</span> Product Strategy & User Experience</div>
-                    <div class="profile-line"><span>GitHub:</span> tainguyenphat74</div>
+                    <div class="profile-line"><span>Experience:</span> 4+ Years</div>
+                    <div class="profile-line"><span>Specialization:</span> SaaS Product Development</div>
+                    <div class="profile-line"><span>Location:</span> Vietnam (Remote)</div>
+                    <div class="profile-line"><span>Stack:</span> Full-Stack (JS/TS/Python/Java)</div>
+                    <div class="profile-line"><span>GitHub:</span> @tainguyenphat74</div>
                 </div>
-                
+
                 <div class="about-text">
                     <p>
-                        I'm a Product Engineer passionate about building innovative solutions that bridge the gap between 
-                        technical capabilities and user needs. My journey combines deep technical expertise with product 
-                        strategy to create meaningful impact.
+                        I'm a Product Engineer who thrives at the intersection of engineering and product strategy. 
+                        With over 4 years of experience, I've developed a deep understanding of how to build 
+                        applications that aren't just technically sound, but also drive user value and business growth.
                     </p>
                     <p>
-                        With experience in both frontend and backend development, I specialize in React, Vue.js, Node.js, 
-                        and cloud technologies. I believe the best products are built when technical capabilities align 
-                        perfectly with user needs and business objectives.
+                        My expertise spans the entire development lifecycle—from conceptualization and user research 
+                        to architecture design and deployment. I specialize in building real-time applications, 
+                        AI-powered tools, and developer utilities that simplify complex workflows.
                     </p>
                     <p>
-                        Currently focused on building products that solve real problems, with a keen interest in 
-                        AI/ML integration, user research, and product-led growth strategies. Always eager to learn 
-                        and collaborate on projects that make a difference.
+                        Currently, I'm focused on <strong>feedbackfun</strong>, a platform designed to revolutionize 
+                        how product teams interact with their users. I'm always looking for ways to leverage 
+                        emerging technologies like AI/ML to create more intelligent and responsive products.
                     </p>
                 </div>
             </div>
@@ -696,42 +745,55 @@ const productEngineer = {<br>
             <h2>Featured Projects</h2>
             <div class="projects-grid">
                 <div class="project-card">
-                    <div class="project-header">🚀 COMMUNICATION PLATFORM</div>
+                    <div class="project-header">🚀 FEEDBACK PLATFORM</div>
                     <div class="project-content">
-                        <h3>UserChatbox</h3>
-                        <div class="project-status">STATUS: LIVE | TECH: React, Node.js, WebSocket</div>
+                        <h3>feedbackfun</h3>
+                        <div class="project-status">STATUS: LIVE | TECH: Next.js, Socket.io, Supabase</div>
                         <p>
-                            A real-time communication platform enabling seamless user interactions. 
-                            Built with modern web technologies, featuring real-time messaging, 
-                            user authentication, and responsive design for optimal user experience.
+                            A native feedback widget that lets users chat, request features, report bugs, 
+                            and view roadmaps directly on your site. Enhances user engagement and 
+                            streamlines the feedback loop for product teams.
                         </p>
-                        <a href="https://userchatbox-web.vercel.app" target="_blank" class="project-link">View Project</a>
+                        <a href="https://feedbackfun.com" target="_blank" class="project-link">View Project</a>
                     </div>
                 </div>
                 <div class="project-card">
-                    <div class="project-header">🎵 PRODUCTIVITY TOOL</div>
+                    <div class="project-header">🧠 AI KNOWLEDGE VISUALIZATION</div>
+                    <div class="project-content">
+                        <h3>MyndMap</h3>
+                        <div class="project-status">STATUS: LIVE | TECH: React, OpenAI, Tailwind</div>
+                        <p>
+                            An AI-powered mind map generator for any topic. Create, share privately 
+                            with your team, or publish publicly for anyone to explore. Visualizes 
+                            complex information into intuitive, interactive maps.
+                        </p>
+                        <a href="https://myndmap.vercel.app" target="_blank" class="project-link">View Project</a>
+                    </div>
+                </div>
+                <div class="project-card">
+                    <div class="project-header">📘 API DOCUMENTATION</div>
+                    <div class="project-content">
+                        <h3>SwagView</h3>
+                        <div class="project-status">STATUS: LIVE | TECH: React, OpenAPI Spec</div>
+                        <p>
+                            Explore and visualize your OpenAPI specs in one place. No backend, 
+                            no login, no setup required. A lightweight, powerful tool for developers 
+                             to interact with API documentation effortlessly.
+                        </p>
+                        <a href="https://swagview.netlify.app/" target="_blank" class="project-link">View Project</a>
+                    </div>
+                </div>
+                <div class="project-card">
+                    <div class="project-header">🎧 PRODUCTIVITY & LEARNING</div>
                     <div class="project-content">
                         <h3>ListenFast</h3>
-                        <div class="project-status">STATUS: LIVE | TECH: Vue.js, PWA, Audio API</div>
+                        <div class="project-status">STATUS: LIVE | TECH: Vue.js, PWA, YouTube API</div>
                         <p>
-                            An innovative productivity application for audio content consumption. 
-                            Features advanced playback controls, speed adjustment, and offline capabilities. 
-                            Designed to enhance learning and information processing efficiency.
+                            Enhance your listening skills by practicing dictation with real YouTube 
+                            conversations. Features advanced playback controls and interactive 
+                            learning tools designed for information processing efficiency.
                         </p>
                         <a href="https://listenfast.vercel.app" target="_blank" class="project-link">View Project</a>
-                    </div>
-                </div>
-                <div class="project-card">
-                    <div class="project-header">💻 OPEN SOURCE</div>
-                    <div class="project-content">
-                        <h3>GitHub Repositories</h3>
-                        <div class="project-status">STATUS: ACTIVE | TECH: Various Technologies</div>
-                        <p>
-                            Collection of open-source projects and contributions spanning multiple technologies. 
-                            Includes experiments with React, Vue.js, Node.js, and emerging technologies. 
-                            Always exploring new solutions and sharing knowledge with the community.
-                        </p>
-                        <a href="https://github.com/tainguyenphat74" target="_blank" class="project-link">View GitHub</a>
                     </div>
                 </div>
             </div>
@@ -767,13 +829,30 @@ const productEngineer = {<br>
     <footer>
         <div class="container">
             <div class="footer-content">
-                <p>&copy; 2025 Tai Nguyen Phat | Product Engineer</p>
+                <p>&copy; 2026 Tai Nguyen Phat | Product Engineer</p>
                 <p>Building innovative solutions that make a difference. Always learning, always growing.</p>
             </div>
         </div>
     </footer>
 
     <script>
+        // Typing effect for subtitle
+        function typeSubtitle() {
+            const subtitle = document.querySelector('.hero .subtitle');
+            const text = subtitle.innerText;
+            subtitle.innerText = '';
+            let i = 0;
+            
+            function type() {
+                if (i < text.length) {
+                    subtitle.innerText += text.charAt(i);
+                    i++;
+                    setTimeout(type, 50);
+                }
+            }
+            
+            type();
+        }
         // Subtle background animation
         function createSubtleBackground() {
             const canvas = document.getElementById('matrix-bg');
@@ -851,12 +930,36 @@ const productEngineer = {<br>
                 }
             });
         }
-        
+
+        // Mobile menu toggle
+        function initMobileMenu() {
+            const menuToggle = document.getElementById('mobile-menu');
+            const navLinks = document.querySelector('.nav-links');
+            
+            if (menuToggle && navLinks) {
+                menuToggle.addEventListener('click', () => {
+                    navLinks.classList.toggle('active');
+                });
+
+                // Close menu when link is clicked
+                document.querySelectorAll('.nav-links a').forEach(link => {
+                    link.addEventListener('click', () => {
+                        navLinks.classList.remove('active');
+                    });
+                });
+            }
+        }
+
         // Initialize everything when page loads
         document.addEventListener('DOMContentLoaded', () => {
             createSubtleBackground();
             initSmoothScrolling();
             initHeaderEffect();
+            initMobileMenu();
+            typeSubtitle();
+            
+            console.log("%c System Initialized ", "background: #00ff41; color: #000; font-weight: bold;");
+            console.log("%c Product Engineer Profile Loaded: Tai Nguyen Phat ", "color: #64b4ff;");
         });
     </script>
 </body>
