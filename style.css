@@ -8,7 +8,6 @@
   --accent:      #E8452B;
   --accent-soft: #FDECE8;
   --print-bg:    #FFFFFF;
-  --print-cap:   #969BA3;
 
   --mono: ui-monospace, "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace;
 }
@@ -24,7 +23,6 @@
     --accent:      #FF6B52;
     --accent-soft: #2A1815;
     --print-bg:    #F2F2F0;   /* a photo print stays paper-white, even at night */
-    --print-cap:   #7A7E85;
   }
 }
 
@@ -117,7 +115,8 @@ h1 {
 .print {
   position: relative;
   background: var(--print-bg);
-  padding: 12px 12px 44px;
+  /* a photo print keeps a deeper margin at the foot — that asymmetry is what reads as "print" */
+  padding: 13px 13px 28px;
   border-radius: 2px;
   transform: rotate(-2.2deg);
   transform-style: preserve-3d;
@@ -130,14 +129,6 @@ h1 {
 
 .print img { display: block; width: 100%; height: auto; border-radius: 1px; }
 
-.print .hand {
-  position: absolute;
-  left: 0; right: 0; bottom: 13px;
-  text-align: center;
-  font-family: var(--mono);
-  font-size: 11.5px;
-  color: var(--print-cap);
-}
 
 .tack {
   position: absolute;
