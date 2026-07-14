@@ -1,25 +1,37 @@
-// Marking the root as .js is what hides the scroll-reveal sections in the first
-// place — without it they stay visible, so a JS failure can never blank the page.
-document.documentElement.classList.add('js');
+// The portrait leans toward whichever corner the pointer is over, and a highlight
+// tracks the cursor across the print. Everything below is enhancement only — with
+// JS off, the photo still shows, just without the tilt.
+const print = document.getElementById('print');
+const stage = print.parentElement;
 
-const nav = document.getElementById('nav');
-const onScroll = () => nav.classList.toggle('stuck', window.scrollY > 8);
-window.addEventListener('scroll', onScroll, { passive: true });
-onScroll();
+const RESTING = 'rotate(-2.2deg)';
+const MAX_TILT = 13; // degrees
+const calm = window.matchMedia('(prefers-reduced-motion: reduce)');
 
-const revealed = document.querySelectorAll('.rise');
+function tiltToPointer(event) {
+  if (calm.matches) return;
 
-if ('IntersectionObserver' in window) {
-  const io = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('on');
-        io.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+  const box = print.getBoundingClientRect();
+  const x = (event.clientX - box.left) / box.width;   // 0 → 1, left to right
+  const y = (event.clientY - box.top) / box.height;   // 0 → 1, top to bottom
 
-  revealed.forEach((el) => io.observe(el));
-} else {
-  revealed.forEach((el) => el.classList.add('on'));
+  const rotateY = (x - 0.5) * 2 * MAX_TILT;   // pointing right pushes the right edge back
+  const rotateX = (0.5 - y) * 2 * MAX_TILT;   // pointing up lifts the top edge forward
+
+  print.style.transform =
+    `rotate(0deg) rotateX(${rotateX.toFixed(2)}deg) rotateY(${rotateY.toFixed(2)}deg) scale(1.035)`;
+  print.style.setProperty('--gx', `${(x * 100).toFixed(1)}%`);
+  print.style.setProperty('--gy', `${(y * 100).toFixed(1)}%`);
 }
+
+stage.addEventListener('pointerenter', () => {
+  if (calm.matches) return;
+  print.classList.add('tracking');
+});
+
+stage.addEventListener('pointermove', tiltToPointer);
+
+stage.addEventListener('pointerleave', () => {
+  print.classList.remove('tracking');
+  print.style.transform = RESTING;
+});
