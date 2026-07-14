@@ -83,6 +83,34 @@ h1 {
 .cta .s { border: 1px solid var(--rule); color: var(--ink); background: var(--panel); }
 .cta .s:hover { border-color: var(--accent); color: var(--accent); }
 
+/* ── socials ──────────────────────────────────────── */
+.socials {
+  margin: 26px 0 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.socials a {
+  /* 44px keeps the tap target usable on a phone, even though the glyph is 18px */
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  display: grid;
+  place-items: center;
+  color: var(--soft);
+  background: var(--panel);
+  border: 1px solid var(--rule);
+  transition: color .18s ease, border-color .18s ease, transform .18s ease;
+}
+.socials svg { width: 18px; height: 18px; }
+.socials a:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+  transform: translateY(-2px);
+}
+
 /* ── the portrait: a pinned print that tilts toward the cursor ── */
 .stage { perspective: 900px; justify-self: center; width: 100%; max-width: 340px; }
 
@@ -256,8 +284,8 @@ h1 {
 
 /* ── motion ───────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
-  .card, .print { transition: none; }
-  .card:hover { transform: none; }
+  .card, .print, .socials a { transition: none; }
+  .card:hover, .socials a:hover { transform: none; }
   .print .glare { display: none; }
 }
 
