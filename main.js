@@ -1,66 +1,25 @@
-document.addEventListener('DOMContentLoaded', () => {
-    console.log("%c Portfolio V4: Industrial Precision Initialized ", "background: #000; color: #fff; padding: 5px 10px; border-radius: 5px; font-weight: bold; border: 1px solid #333;");
-    
-    // 1. Reveal on Scroll (Intersection Observer)
-    const revealElements = document.querySelectorAll('.reveal');
-    const revealCallback = (entries, observer) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('active');
-                observer.unobserve(entry.target);
-            }
-        });
-    };
+// Marking the root as .js is what hides the scroll-reveal sections in the first
+// place — without it they stay visible, so a JS failure can never blank the page.
+document.documentElement.classList.add('js');
 
-    const revealObserver = new IntersectionObserver(revealCallback, {
-        threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
+const nav = document.getElementById('nav');
+const onScroll = () => nav.classList.toggle('stuck', window.scrollY > 8);
+window.addEventListener('scroll', onScroll, { passive: true });
+onScroll();
+
+const revealed = document.querySelectorAll('.rise');
+
+if ('IntersectionObserver' in window) {
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('on');
+        io.unobserve(entry.target);
+      }
     });
+  }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
 
-    revealElements.forEach(el => revealObserver.observe(el));
-
-    // 2. Smooth Link Handling
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-            e.preventDefault();
-            const target = document.querySelector(this.getAttribute('href'));
-            if (target) {
-                const headerOffset = 70;
-                const elementPosition = target.getBoundingClientRect().top;
-                const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-
-                window.scrollTo({
-                    top: offsetPosition,
-                    behavior: 'smooth'
-                });
-            }
-        });
-    });
-
-    // 3. Header Visibility Logic
-    let lastScrollY = window.scrollY;
-    const nav = document.querySelector('.nav-minimal');
-    
-    window.addEventListener('scroll', () => {
-        if (window.scrollY > lastScrollY && window.scrollY > 100) {
-            // Scroll down - hide nav
-            nav.style.transform = 'translateY(-100%)';
-        } else {
-            // Scroll up - show nav
-            nav.style.transform = 'translateY(0)';
-        }
-        lastScrollY = window.scrollY;
-    });
-
-    // 4. Subtle Mouse Grid Interaction
-    const grid = document.querySelector('.grid-overlay');
-    window.addEventListener('mousemove', (e) => {
-        const x = (e.clientX / window.innerWidth) * 100;
-        const y = (e.clientY / window.innerHeight) * 100;
-        grid.style.backgroundImage = `
-            radial-gradient(circle at ${x}% ${y}%, rgba(255,255,255,0.05) 0%, transparent 40%),
-            linear-gradient(to right, #111 1px, transparent 1px),
-            linear-gradient(to bottom, #111 1px, transparent 1px)
-        `;
-    });
-});
+  revealed.forEach((el) => io.observe(el));
+} else {
+  revealed.forEach((el) => el.classList.add('on'));
+}
