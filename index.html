@@ -129,5 +129,12 @@
   </div>
 
   <script src="main.js"></script>
+
+  <!-- Vercel Web Analytics. The script is served by Vercel itself, so it only
+       resolves on a Vercel deployment — locally the request 404s and nothing breaks. -->
+  <script>
+    window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+  </script>
+  <script defer src="/_vercel/insights/script.js"></script>
 </body>
 </html>
