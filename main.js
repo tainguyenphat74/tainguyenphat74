@@ -35,3 +35,23 @@ stage.addEventListener('pointerleave', () => {
   print.classList.remove('tracking');
   print.style.transform = RESTING;
 });
+
+// Page-view counter. Count once per browser session (a refresh doesn't inflate it);
+// later opens in the same session just read the total. Fails silently if the
+// endpoint is unreachable — the line stays hidden rather than showing an error.
+(async function views() {
+  const el = document.getElementById('views');
+  if (!el) return;
+
+  const counted = sessionStorage.getItem('counted') === '1';
+  try {
+    const res = await fetch('/api/views', { method: counted ? 'GET' : 'POST' });
+    if (!res.ok) return;
+    const { count } = await res.json();
+    if (typeof count !== 'number') return;
+
+    sessionStorage.setItem('counted', '1');
+    el.textContent = `👀 ${count.toLocaleString('en-US')} views`;
+    el.hidden = false;
+  } catch { /* offline or endpoint down — leave the line hidden */ }
+})();
