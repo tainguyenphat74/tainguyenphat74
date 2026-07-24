@@ -14,6 +14,7 @@ Software Engineer with 4+ years experience, passionate about building SaaS produ
 
 I'm always open to discussing new ideas, collaborations, or opportunities.
 
+- 🌐 Homepage: [tainguyenphat.com](https://tainguyenphat.com)
 - 💼 LinkedIn: [Tai Nguyen Phat](https://www.linkedin.com/in/tainguyenphat74)
 - 📧 Email: nguyentai2760@gmail.com
 
