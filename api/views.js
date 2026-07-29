@@ -3,10 +3,15 @@
 // Env vars are provisioned by the Vercel Upstash integration; we accept either the
 // Upstash-native names or Vercel's KV_* aliases.
 export default async function handler(req, res) {
+  res.setHeader('Cache-Control', 'no-store');
+
+  if (req.method !== 'GET' && req.method !== 'POST') {
+    res.status(405).setHeader('Allow', 'GET, POST').json({ error: 'method not allowed' });
+    return;
+  }
+
   const url = process.env.UPSTASH_REDIS_REST_URL || process.env.KV_REST_API_URL;
   const token = process.env.UPSTASH_REDIS_REST_TOKEN || process.env.KV_REST_API_TOKEN;
-
-  res.setHeader('Cache-Control', 'no-store');
 
   if (!url || !token) {
     res.status(500).json({ error: 'counter not configured' });
@@ -19,6 +24,10 @@ export default async function handler(req, res) {
     const upstream = await fetch(`${url}/${command}/views:home`, {
       headers: { Authorization: `Bearer ${token}` },
     });
+    if (!upstream.ok) {
+      res.status(502).json({ error: 'counter unavailable' });
+      return;
+    }
     const data = await upstream.json();
     res.status(200).json({ count: Number(data.result) || 0 });
   } catch {

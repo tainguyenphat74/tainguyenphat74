@@ -1,14 +1,17 @@
-## Hi, I'm Tai Nguyen Phat👋
+## Hi, I'm Tai Nguyen Phat 👋
 
-Software Engineer with 4+ years experience, passionate about building SaaS product.
+Software Engineer with 4+ years of experience building and shipping SaaS products from idea to production.
 
-### Projects
+### Current products
 
-- 💭 [feedbackfun](https://feedbackfun.com) (Current): A native feedback widget let users chat, request features, report bug, view roadmap directly on your site.
-- 🗣️ [Echoling](https://echoling-eosin.vercel.app): Learn a language by echoing real YouTube speech — shadow native audio and lock it in with spaced repetition.
-- 🧠 [MyndMap](https://myndmap.vercel.app): An AI-powered mind maps for any topic — share privately with your team or publicly for anyone to explore
-- 📘 [SpecViewer](https://specviewer.app): Explore and visualize your OpenAPI specs in one place — no backend, no login, no setup.
-- 🎧 [ListenFast](https://listenfast.vercel.app): Enhance your listening skills by practicing dictation with real YouTube conversations on our platform.
+- 💭 [FeedbackFun](https://feedbackfun.com) — A native feedback widget that lets users chat, request features, report bugs, and view a roadmap directly on your site.
+- 🗣️ [Echoling](https://echoling-eosin.vercel.app) — Learn a language by echoing real YouTube speech, with shadowing practice and spaced repetition.
+- 📘 [SpecViewer](https://specviewer.app) — Explore and visualize OpenAPI specs in one place — no backend, login, or setup required.
+
+### Earlier experiments
+
+- 🧠 [MyndMap](https://myndmap.vercel.app) — Generate, organize, and share AI-powered mind maps.
+- 🎧 [ListenFast](https://listenfast.vercel.app) — Practice listening skills with real YouTube conversations and interactive dictation.
 
 ### 🤝 Connect With Me
 
