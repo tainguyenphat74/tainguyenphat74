@@ -28,3 +28,11 @@ test('real keyboard lifecycle bindings release movement on focus, blur and hidin
  blocked=true;down();assert.equal(input.direction(0).z,0);blocked=false;
  doc.fire('keydown',{target:canvas,key:'e',preventDefault(){}});assert.equal(opens,1);assert.equal(stops,3);
 });
+
+test('focused website anchors retain native Enter and movement keys',async()=>{
+ const {bindKeyboard}=await import('../controls.js');const handlers={};const canvas={},anchor={},input=createInput(canvas);let interactions=0;
+ const doc={addEventListener(k,fn){handlers[k]=fn;}},win={addEventListener(){}};
+ bindKeyboard({doc,win,canvas,input,blocked:()=>false,stop:()=>{},interact:()=>interactions++});
+ for(const key of ['Enter','e','w','ArrowDown'])handlers.keydown({target:anchor,key,preventDefault(){assert.fail('native anchor key was intercepted');}});
+ assert.equal(interactions,0);assert.deepEqual(input.direction(0),{x:0,z:0});
+});

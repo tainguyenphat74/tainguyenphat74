@@ -1,14 +1,16 @@
 import {createWalker,entrances} from './movement.js';
 import {createInput,orbit,bindKeyboard} from './controls.js';
 import {shouldRender} from './render-policy.js';
+import {updateNearby} from './nearby.js';
 import {buildings} from './world.js';
 const projects={feedbackfun:{name:'FeedbackFun',category:'01 / Feedback café · Customer feedback',image:'assets/feedbackfun.png',description:'A native feedback widget that lets users chat, request features, report bugs, and view a roadmap directly on your site.',url:'https://feedbackfun.com'},specviewer:{name:'SpecViewer',category:'02 / Developer workshop · Developer tool',image:'assets/specviewer.png',description:'Explore and visualize OpenAPI specs in one place — no backend, login, or setup required.',url:'https://specviewer.app'},echoling:{name:'Echoling',category:'03 / Listening cabin · Learning',image:'assets/echoling.png',description:'Learn a language by echoing real YouTube speech, with shadowing practice and spaced repetition.',url:'https://echoling-eosin.vercel.app'}};
 const canvas=document.getElementById('island'),world=document.getElementById('world');
 const detail=document.getElementById('project-dialog'),directory=document.getElementById('list-dialog');
 const status=document.getElementById('walk-status'),interact=document.getElementById('interact');
+const signal=document.getElementById('entrance-signal');
 const walker=createWalker(),input=createInput(canvas),reduced=matchMedia('(prefers-reduced-motion: reduce)');
 let view,raf=0,previous=0,failed=false,lastNearby,returnFocus=canvas,lastRender=-Infinity,lastState='';
-const initial=()=>({yaw:.22,pitch:.72,distance:innerWidth<700?52:36});let camera=initial();
+const initial=()=>({yaw:.22,pitch:.72,distance:innerWidth<700?57:36});let camera=initial();
 const modalOpen=()=>detail.open||directory.open;
 function stop(){input.stop(()=>walker.stop());}
 function showProject(id){if(!id)return;stop();const p=projects[id];
@@ -24,12 +26,12 @@ function navigate(point,id){stop();canvas.focus({preventScroll:true});returnFocu
 for(const button of document.querySelectorAll('#labels button'))button.addEventListener('click',()=>navigate(entrances[button.dataset.project],button.dataset.project));
 for(const button of document.querySelectorAll('.project-row'))button.addEventListener('click',()=>{returnFocus=button;showProject(button.dataset.project);});
 document.getElementById('view-projects').addEventListener('click',()=>{stop();directory.showModal();});
-interact.addEventListener('click',()=>{returnFocus=canvas;showProject(walker.interact());});
+
 for(const dialog of [detail,directory]){dialog.querySelector('.close').addEventListener('click',()=>dialog.close());dialog.addEventListener('close',()=>{stop();if(dialog===detail&&returnFocus?.isConnected)returnFocus.focus({preventScroll:true});});}
-function fail(message){failed=true;stop();cancelAnimationFrame(raf);world.classList.remove('ready');world.classList.add('failed');document.getElementById('fallback-message').textContent=message;}
+function fail(message){failed=true;stop();updateNearby([interact,signal],null);cancelAnimationFrame(raf);world.classList.remove('ready');world.classList.add('failed');document.getElementById('fallback-message').textContent=message;}
 canvas.addEventListener('webglcontextlost',e=>{e.preventDefault();fail('The 3D world paused because its graphics context was lost. All projects are available below. Reload to explore the island again.');});
 canvas.addEventListener('webglcontextrestored',()=>{document.getElementById('fallback-message').textContent='Graphics are available again. Reload to rebuild the island, or explore the projects below.';});
-bindKeyboard({doc:document,win:window,canvas,input,blocked:()=>modalOpen()||failed,stop,interact:e=>{if(walker.nearby()){e.preventDefault();returnFocus=canvas;showProject(walker.interact());}}});
+bindKeyboard({doc:document,win:window,canvas,input,blocked:()=>modalOpen()||failed,stop,interact:e=>{if(walker.nearby()){e.preventDefault();stop();interact.focus({preventScroll:true});}}});
 window.addEventListener('blur',()=>{stop();pointers.clear();gesture=null;});
 document.addEventListener('visibilitychange',()=>{stop();previous=0;cancelAnimationFrame(raf);if(!document.hidden&&view&&!failed)raf=requestAnimationFrame(frame);});
 reduced.addEventListener('change',stop);
@@ -48,9 +50,10 @@ document.getElementById('zoom-in').addEventListener('click',()=>camera=orbit(cam
 document.getElementById('zoom-out').addEventListener('click',()=>camera=orbit(camera,0,0,100));
 document.getElementById('reset-camera').addEventListener('click',()=>camera=initial());
 function frame(now){if(failed||document.hidden)return;const dt=previous?Math.min((now-previous)/1000,.05):0;previous=now;
- try{if(!modalOpen()){const opened=walker.tick(dt,input.direction(camera.yaw));if(opened)showProject(opened);}
- const nearby=walker.nearby();interact.hidden=!nearby;if(nearby!==lastNearby){if(nearby){status.textContent=`${projects[nearby].name} · Press E to explore`;interact.textContent=`Explore ${projects[nearby].name} ↗`;}else if(lastNearby)status.textContent='Tap the grass to wander. Select a place to visit.';lastNearby=nearby;}
- const state=[camera.yaw,camera.pitch,camera.distance,walker.position.x,walker.position.z,walker.facing,walker.walking,canvas.clientWidth,canvas.clientHeight].join(',');
+ try{if(!modalOpen()){walker.tick(dt,input.direction(camera.yaw));}
+ const nearby=walker.nearby();if(nearby!==lastNearby){updateNearby([interact,signal],projects[nearby]);if(nearby)status.textContent=`${projects[nearby].name} entrance · E / Enter focuses the website link`;else if(lastNearby)status.textContent='Tap the grass to wander. Select a place to visit.';lastNearby=nearby;}
+ if(nearby){const p=view.project({...entrances[nearby],y:1.9});signal.style.left=Math.max(120,Math.min(canvas.clientWidth-120,p.x))+'px';signal.style.top=Math.max(150,Math.min(canvas.clientHeight-180,p.y))+'px';signal.hidden=!p.visible;}
+ const state=[view.revision,reduced.matches,camera.yaw,camera.pitch,camera.distance,walker.position.x,walker.position.z,walker.facing,walker.walking,canvas.clientWidth,canvas.clientHeight].join(',');
  if(shouldRender({modal:modalOpen(),changed:state!==lastState,reduced:reduced.matches,elapsed:(now-lastRender)/1000})){
  view.render(camera,walker,now/1000,reduced.matches);lastRender=now;lastState=state;
  }

@@ -16,7 +16,7 @@ test('navigation routes around footprints, rejects water, and has safe segments'
  assert.ok(path.length>1);let p=start;for(const q of path){assert.ok(m.clear(p,q));p=q;}assert.deepEqual(p,goal);
  assert.deepEqual(m.route(start,{x:40,z:0}),[]);
 });
-test('all project doors reachable; arrival opens once, manual input and stop cancel',()=>{
+test('all project doors reachable; arrival reports once, manual input and stop cancel',()=>{
  const w=m.createWalker();assert.equal(w.interact(),null);
  for(const [id,p] of Object.entries(m.entrances)){assert.ok(w.go(p,id));let opened;for(let i=0;i<1600&&!opened;i++)opened=w.tick(.05);assert.equal(opened,id);assert.equal(w.interact(),id);assert.equal(w.tick(.05),null);}
  w.go(m.entrances.feedbackfun,'feedbackfun');w.tick(.1,{x:0,z:1});for(let i=0;i<500;i++)assert.equal(w.tick(.05),null);

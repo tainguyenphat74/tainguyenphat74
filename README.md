@@ -25,16 +25,18 @@ Feel free to reach out if you want to collaborate, ask questions, or just connec
 
 ### Maker island homepage
 
-A fullscreen Three.js world built from original low-poly geometry. No build step:
+A fullscreen Three.js world built from original procedural geometry and local material textures. No build step:
 serve with `python3 -m http.server 8000` and open `http://localhost:8000`.
 `npm test` runs pure world-space movement, routing, camera/input lifecycle and
 existing view-counter/API tests. Motion tests need no DOM or WebGL.
 
 - Focus the island, then WASD / arrows to walk; tap grass to route around obstacles.
-- Select a building or its label to walk to its door and open its project.
-- E / Enter near a door opens the project; Escape closes dialogs.
+- Select a building or its label to walk to its door; arrival stops and shows a website link.
+- E / Enter near a door focuses its real website anchor; Enter then opens a new tab.
+- The entrance signal and HUD link open only on activation; leaving clears both links.
+- Arrival never opens a website or detail panel. Escape closes directory dialogs.
 - Drag to orbit, scroll / pinch or use + / − to zoom; home resets the camera.
-- Project directory opens directly; Say hello contains email and social links.
+- Project directory offers optional details and direct new-tab visit links; Say hello contains email and social links.
 
 Movement stops on blur, hidden tabs, control focus and dialogs. Reduced motion
 removes limb and ocean/boat animation. Static project links remain available without
@@ -49,3 +51,19 @@ DPR is capped at 1.7, shadows at 1024px, and static geometry is batched by mater
 
 Rendering is capped at 30 FPS, pauses behind project dialogs, and stays idle when
 reduced-motion mode has no scene changes.
+
+Grass, shore and paths use locally hosted 512px CC0 photographic diffuse textures
+from Poly Haven; sources and licenses are in `assets/materials/README.md`.
+World-space UVs keep their physical repeat size consistent across terrain triangles
+and path bends. Stone, timber and roofing remain original procedural maps.
+Trees use original alpha-cutout leaf sprays on instanced crossed cards (5,472
+foliage triangles total, one material/draw call, no canopy shadow pass or blending).
+Ocean lighting uses subtle shader normal ripples and a Fresnel sky tint; time stays
+static in reduced-motion mode. Texture completion invalidates the idle scene once
+per load, while dialogs still pause rendering.
+
+This is a lightweight naturalistic scene, not photorealistic: terrain is simplified,
+photo tiles can repeat, foliage is card-based, and the ocean has no real reflections,
+refraction or breaking waves. The adult-proportioned walker and shared navigation
+footprints are preserved. Navigation uses a conservative flat land boundary inside
+the decorative shore.
