@@ -22,3 +22,16 @@ I'm always open to discussing new ideas, collaborations, or opportunities.
 - 📧 Email: nguyentai2760@gmail.com
 
 Feel free to reach out if you want to collaborate, ask questions, or just connect!
+
+### Maker island homepage
+
+Use WASD / arrow keys with the island focused, tap open grass, or use the
+on-screen direction buttons. Select a project marker to walk to its door;
+press E / Enter near a door to explore. View projects opens the directory
+immediately. Escape closes dialogs. Movement stops on blur, tab hiding, or
+control focus; reduced motion disables decorative walking and water animation.
+
+Static HTML, CSS and native JavaScript modules; no build or dependencies.
+Serve locally with `python3 -m http.server 8000`, then open `http://localhost:8000`.
+Run `npm test` for the counter and movement/navigation tests. The view counter
+requires the existing `/api/views` deployment endpoint (it stays hidden locally).
