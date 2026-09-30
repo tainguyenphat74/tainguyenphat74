@@ -1,77 +1,61 @@
-import {createWalker, entrances, move} from './movement.js';
+import {createWalker,entrances} from './movement.js';
+import {createInput,orbit,bindKeyboard} from './controls.js';
+import {shouldRender} from './render-policy.js';
+import {buildings} from './world.js';
 const projects={feedbackfun:{name:'FeedbackFun',category:'01 / Feedback café · Customer feedback',image:'assets/feedbackfun.png',description:'A native feedback widget that lets users chat, request features, report bugs, and view a roadmap directly on your site.',url:'https://feedbackfun.com'},specviewer:{name:'SpecViewer',category:'02 / Developer workshop · Developer tool',image:'assets/specviewer.png',description:'Explore and visualize OpenAPI specs in one place — no backend, login, or setup required.',url:'https://specviewer.app'},echoling:{name:'Echoling',category:'03 / Listening cabin · Learning',image:'assets/echoling.png',description:'Learn a language by echoing real YouTube speech, with shadowing practice and spaced repetition.',url:'https://echoling-eosin.vercel.app'}};
-const island=document.getElementById('island');
-const svg=island.querySelector('svg'), avatar=document.getElementById('walker');
-const detail=document.getElementById('project-dialog'), directory=document.getElementById('list-dialog');
-const status=document.getElementById('walk-status'), interact=document.getElementById('interact');
-const walker=createWalker(), keys=new Set();
-const vectors={ArrowUp:[0,-1],w:[0,-1],ArrowDown:[0,1],s:[0,1],ArrowLeft:[-1,0],a:[-1,0],ArrowRight:[1,0],d:[1,0]};
-const steps={up:[0,-1],down:[0,1],left:[-1,0],right:[1,0]};
-let previous=0,lastNearby=null,returnFocus=island;
-function stop(){keys.clear();walker.stop();avatar.classList.remove('walking');}
-function modalOpen(){return detail.open||directory.open;}
-function showProject(id){
- if(!id)return;
- stop();const p=projects[id];
+const canvas=document.getElementById('island'),world=document.getElementById('world');
+const detail=document.getElementById('project-dialog'),directory=document.getElementById('list-dialog');
+const status=document.getElementById('walk-status'),interact=document.getElementById('interact');
+const walker=createWalker(),input=createInput(canvas),reduced=matchMedia('(prefers-reduced-motion: reduce)');
+let view,raf=0,previous=0,failed=false,lastNearby,returnFocus=canvas,lastRender=-Infinity,lastState='';
+const initial=()=>({yaw:.22,pitch:.72,distance:innerWidth<700?52:36});let camera=initial();
+const modalOpen=()=>detail.open||directory.open;
+function stop(){input.stop(()=>walker.stop());}
+function showProject(id){if(!id)return;stop();const p=projects[id];
  document.getElementById('project-category').textContent=p.category;
  document.getElementById('project-title').textContent=p.name;
  document.getElementById('project-description').textContent=p.description;
  const img=document.getElementById('project-image');img.src=p.image;img.alt=p.name+' project screenshot';
- document.getElementById('project-link').href=p.url;
- detail.showModal();
+ document.getElementById('project-link').href=p.url;detail.showModal();
 }
-function render(){
- avatar.setAttribute('transform',`translate(${walker.position.x} ${walker.position.y})`);
- avatar.dataset.facing=walker.facing;
- avatar.classList.toggle('walking',walker.walking);
- const nearby=walker.nearby();
- interact.disabled=!nearby;
- interact.textContent=nearby?`Explore ${projects[nearby].name}`:'Explore nearby project';
- if(nearby!==lastNearby){status.textContent=nearby?`${projects[nearby].name} · Press E / Enter to explore`:'Tap the grass to wander. Select a place to visit.';lastNearby=nearby;}
+function navigate(point,id){stop();canvas.focus({preventScroll:true});returnFocus=canvas;
+ status.textContent=walker.go(point,id)?id?`Walking to ${projects[id].name}…`:'On my way…':'That spot is off the path. Try some open grass.';
 }
-function navigate(point,id){
- stop();island.focus({preventScroll:true});returnFocus=island;
- if(walker.go(point,id))status.textContent=id?`Walking to ${projects[id].name}…`:'On my way…';
- else status.textContent='Choose open grass nearby, or select a project above.';
-}
-island.addEventListener('click',event=>{
- if(event.target.closest('button'))return;
- const point=new DOMPoint(event.clientX,event.clientY).matrixTransform(svg.getScreenCTM().inverse());
- navigate({x:point.x,y:point.y});
-});
-document.querySelectorAll('.hotspot').forEach(button=>button.addEventListener('click',()=>navigate(entrances[button.dataset.project],button.dataset.project)));
-document.querySelectorAll('.project-row').forEach(button=>button.addEventListener('click',()=>{returnFocus=button;showProject(button.dataset.project);}));
+for(const button of document.querySelectorAll('#labels button'))button.addEventListener('click',()=>navigate(entrances[button.dataset.project],button.dataset.project));
+for(const button of document.querySelectorAll('.project-row'))button.addEventListener('click',()=>{returnFocus=button;showProject(button.dataset.project);});
 document.getElementById('view-projects').addEventListener('click',()=>{stop();directory.showModal();});
-interact.addEventListener('click',()=>{returnFocus=interact;showProject(walker.interact());});
-document.querySelectorAll('[data-step]').forEach(button=>button.addEventListener('click',()=>{
- const [x,y]=steps[button.dataset.step];navigate(move(walker.position,{x,y},.5));
-}));
-function acceptsKeys(event){return !modalOpen()&&!event.ctrlKey&&!event.metaKey&&!event.altKey&&(event.target===document.body||event.target===island);}
-document.addEventListener('keydown',event=>{
- if(!acceptsKeys(event))return;
- const key=event.key.length===1?event.key.toLowerCase():event.key;
- if(vectors[key]){event.preventDefault();keys.add(key);}
- else if((key==='e'||key==='Enter')&&!event.repeat){event.preventDefault();returnFocus=island;showProject(walker.interact());}
+interact.addEventListener('click',()=>{returnFocus=canvas;showProject(walker.interact());});
+for(const dialog of [detail,directory]){dialog.querySelector('.close').addEventListener('click',()=>dialog.close());dialog.addEventListener('close',()=>{stop();if(dialog===detail&&returnFocus?.isConnected)returnFocus.focus({preventScroll:true});});}
+function fail(message){failed=true;stop();cancelAnimationFrame(raf);world.classList.remove('ready');world.classList.add('failed');document.getElementById('fallback-message').textContent=message;}
+canvas.addEventListener('webglcontextlost',e=>{e.preventDefault();fail('The 3D world paused because its graphics context was lost. All projects are available below. Reload to explore the island again.');});
+canvas.addEventListener('webglcontextrestored',()=>{document.getElementById('fallback-message').textContent='Graphics are available again. Reload to rebuild the island, or explore the projects below.';});
+bindKeyboard({doc:document,win:window,canvas,input,blocked:()=>modalOpen()||failed,stop,interact:e=>{if(walker.nearby()){e.preventDefault();returnFocus=canvas;showProject(walker.interact());}}});
+window.addEventListener('blur',()=>{stop();pointers.clear();gesture=null;});
+document.addEventListener('visibilitychange',()=>{stop();previous=0;cancelAnimationFrame(raf);if(!document.hidden&&view&&!failed)raf=requestAnimationFrame(frame);});
+reduced.addEventListener('change',stop);
+// A short tap walks; a drag or two-finger gesture only changes the camera.
+const pointers=new Map();let gesture=null;
+canvas.addEventListener('pointerdown',e=>{if(failed||modalOpen())return;canvas.focus({preventScroll:true});canvas.setPointerCapture(e.pointerId);pointers.set(e.pointerId,{x:e.clientX,y:e.clientY});if(pointers.size===1)gesture={x:e.clientX,y:e.clientY,moved:false};else if(gesture)gesture.moved=true;});
+canvas.addEventListener('pointermove',e=>{const p=pointers.get(e.pointerId);if(!p||!gesture)return;const dx=e.clientX-p.x,dy=e.clientY-p.y;
+ if(pointers.size===2){const other=[...pointers.entries()].find(([id])=>id!==e.pointerId)[1];const before=Math.hypot(p.x-other.x,p.y-other.y),after=Math.hypot(e.clientX-other.x,e.clientY-other.y);camera=orbit(camera,0,0,(before-after)*3);gesture.moved=true;}
+ else if(Math.hypot(e.clientX-gesture.x,e.clientY-gesture.y)>5||gesture.moved){gesture.moved=true;camera=orbit(camera,dx,dy);}
+ pointers.set(e.pointerId,{x:e.clientX,y:e.clientY});
 });
-document.addEventListener('keyup',event=>keys.delete(event.key.length===1?event.key.toLowerCase():event.key));
-document.addEventListener('focusin',event=>{if(event.target!==island&&event.target!==document.body)stop();});
-window.addEventListener('blur',stop);
-document.addEventListener('visibilitychange',()=>{stop();previous=0;});
-document.querySelectorAll('dialog').forEach(dialog=>{
- dialog.querySelector('.close').addEventListener('click',()=>dialog.close());
- dialog.addEventListener('close',()=>{stop();if(dialog===detail)returnFocus.focus({preventScroll:true});});
- dialog.addEventListener('click',event=>{
-  if(event.target!==dialog)return;
-  const r=dialog.getBoundingClientRect();
-  if(event.clientX<r.left||event.clientX>r.right||event.clientY<r.top||event.clientY>r.bottom)dialog.close();
- });
-});
-function frame(now){
- const dt=previous?Math.min((now-previous)/1000,.05):0;previous=now;
- if(!document.hidden&&!modalOpen()){
-  const input={x:0,y:0};for(const key of keys){input.x+=vectors[key][0];input.y+=vectors[key][1];}
-  const opened=walker.tick(dt,input);render();if(opened)showProject(opened);
+canvas.addEventListener('pointerup',e=>{if(!pointers.has(e.pointerId))return;pointers.delete(e.pointerId);if(!pointers.size){if(gesture&&!gesture.moved&&view){const hit=view.pick(e.clientX,e.clientY);if(hit)navigate(hit.id?entrances[hit.id]:hit.point,hit.id);}gesture=null;}});
+canvas.addEventListener('pointercancel',()=>{pointers.clear();gesture=null;stop();});
+canvas.addEventListener('wheel',e=>{if(failed)return;e.preventDefault();camera=orbit(camera,0,0,Math.max(-150,Math.min(150,e.deltaY)));},{passive:false});
+document.getElementById('zoom-in').addEventListener('click',()=>camera=orbit(camera,0,0,-100));
+document.getElementById('zoom-out').addEventListener('click',()=>camera=orbit(camera,0,0,100));
+document.getElementById('reset-camera').addEventListener('click',()=>camera=initial());
+function frame(now){if(failed||document.hidden)return;const dt=previous?Math.min((now-previous)/1000,.05):0;previous=now;
+ try{if(!modalOpen()){const opened=walker.tick(dt,input.direction(camera.yaw));if(opened)showProject(opened);}
+ const nearby=walker.nearby();interact.hidden=!nearby;if(nearby!==lastNearby){if(nearby){status.textContent=`${projects[nearby].name} · Press E to explore`;interact.textContent=`Explore ${projects[nearby].name} ↗`;}else if(lastNearby)status.textContent='Tap the grass to wander. Select a place to visit.';lastNearby=nearby;}
+ const state=[camera.yaw,camera.pitch,camera.distance,walker.position.x,walker.position.z,walker.facing,walker.walking,canvas.clientWidth,canvas.clientHeight].join(',');
+ if(shouldRender({modal:modalOpen(),changed:state!==lastState,reduced:reduced.matches,elapsed:(now-lastRender)/1000})){
+ view.render(camera,walker,now/1000,reduced.matches);lastRender=now;lastState=state;
  }
- requestAnimationFrame(frame);
+ for(const b of buildings){const label=document.querySelector(`#labels [data-project="${b.id}"]`),p=view.project(b);label.style.left=p.x+'px';label.style.top=p.y+'px';label.hidden=!p.visible;}
+ raf=requestAnimationFrame(frame);
+ }catch(error){console.error(error);fail('The island could not render on this device. You can still explore every project below.');}
 }
-render();requestAnimationFrame(frame);
+try{const {createScene}=await import('./scene.js');view=createScene(canvas);view.resize();window.addEventListener('resize',()=>view.resize());world.classList.add('ready');raf=requestAnimationFrame(frame);}catch(error){console.error(error);fail('The 3D island needs WebGL. You can still explore every project below.');}

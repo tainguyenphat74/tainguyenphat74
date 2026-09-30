@@ -25,13 +25,27 @@ Feel free to reach out if you want to collaborate, ask questions, or just connec
 
 ### Maker island homepage
 
-Use WASD / arrow keys with the island focused, tap open grass, or use the
-on-screen direction buttons. Select a project marker to walk to its door;
-press E / Enter near a door to explore. View projects opens the directory
-immediately. Escape closes dialogs. Movement stops on blur, tab hiding, or
-control focus; reduced motion disables decorative walking and water animation.
+A fullscreen Three.js world built from original low-poly geometry. No build step:
+serve with `python3 -m http.server 8000` and open `http://localhost:8000`.
+`npm test` runs pure world-space movement, routing, camera/input lifecycle and
+existing view-counter/API tests. Motion tests need no DOM or WebGL.
 
-Static HTML, CSS and native JavaScript modules; no build or dependencies.
-Serve locally with `python3 -m http.server 8000`, then open `http://localhost:8000`.
-Run `npm test` for the counter and movement/navigation tests. The view counter
-requires the existing `/api/views` deployment endpoint (it stays hidden locally).
+- Focus the island, then WASD / arrows to walk; tap grass to route around obstacles.
+- Select a building or its label to walk to its door and open its project.
+- E / Enter near a door opens the project; Escape closes dialogs.
+- Drag to orbit, scroll / pinch or use + / − to zoom; home resets the camera.
+- Project directory opens directly; Say hello contains email and social links.
+
+Movement stops on blur, hidden tabs, control focus and dialogs. Reduced motion
+removes limb and ocean/boat animation. Static project links remain available without
+JavaScript or WebGL; context loss shows the directory. The dock is decorative and
+walking stays on grass. The `/api/views` endpoint is unchanged and hides its count
+when unavailable on a local static server.
+
+Three.js 0.186.1 is served from `vendor/three.module.js` and `three.core.js`, with
+its MIT license alongside. To update, copy these two files and LICENSE from the
+installed package; no bare browser imports, CDN or node_modules runtime requests.
+DPR is capped at 1.7, shadows at 1024px, and static geometry is batched by material.
+
+Rendering is capped at 30 FPS, pauses behind project dialogs, and stays idle when
+reduced-motion mode has no scene changes.
