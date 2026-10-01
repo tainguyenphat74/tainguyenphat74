@@ -20,19 +20,19 @@ test('controller owns canvas keys only; blur, hidden, dialog and focus clear que
 test('real keyboard lifecycle bindings release movement on focus, blur and hiding',async()=>{
  const {bindKeyboard}=await import('../controls.js');
  class Events{listeners={};addEventListener(k,fn){(this.listeners[k]??=[]).push(fn);}fire(k,e={}){for(const fn of this.listeners[k]??[])fn(e);}}
- const doc=new Events(),win=new Events(),canvas={},input=createInput(canvas);let stops=0,opens=0,blocked=false;
- bindKeyboard({doc,win,canvas,input,blocked:()=>blocked,stop:()=>input.stop(()=>stops++),interact:()=>opens++});
+ const doc=new Events(),win=new Events(),canvas={},input=createInput(canvas);let stops=0,farms=0,blocked=false;
+ bindKeyboard({doc,win,canvas,input,blocked:()=>blocked,stop:()=>input.stop(()=>stops++),farm:()=>farms++});
  const down=()=>doc.fire('keydown',{target:canvas,key:'w',preventDefault(){}});
  down();assert.equal(input.direction(0).z,-1);
  for(const [source,event,e] of [[win,'blur',{}],[doc,'visibilitychange',{}],[doc,'focusin',{target:{}}]]){down();source.fire(event,e);assert.equal(input.direction(0).z,0);}
  blocked=true;down();assert.equal(input.direction(0).z,0);blocked=false;
- doc.fire('keydown',{target:canvas,key:'e',preventDefault(){}});assert.equal(opens,1);assert.equal(stops,3);
+ doc.fire('keydown',{target:canvas,key:'f',preventDefault(){}});assert.equal(farms,1);assert.equal(stops,3);
 });
 
-test('focused website anchors retain native Enter and movement keys',async()=>{
- const {bindKeyboard}=await import('../controls.js');const handlers={};const canvas={},anchor={},input=createInput(canvas);let interactions=0;
+test('focused help controls retain native Enter and movement keys',async()=>{
+ const {bindKeyboard}=await import('../controls.js');const handlers={};const canvas={},control={},input=createInput(canvas);let farms=0;
  const doc={addEventListener(k,fn){handlers[k]=fn;}},win={addEventListener(){}};
- bindKeyboard({doc,win,canvas,input,blocked:()=>false,stop:()=>{},interact:()=>interactions++});
- for(const key of ['Enter','e','w','ArrowDown'])handlers.keydown({target:anchor,key,preventDefault(){assert.fail('native anchor key was intercepted');}});
- assert.equal(interactions,0);assert.deepEqual(input.direction(0),{x:0,z:0});
+ bindKeyboard({doc,win,canvas,input,blocked:()=>false,stop:()=>{},farm:()=>farms++});
+ for(const key of ['Enter','e','w','ArrowDown'])handlers.keydown({target:control,key,preventDefault(){assert.fail('native control key was intercepted');}});
+ assert.equal(farms,0);assert.deepEqual(input.direction(0),{x:0,z:0});
 });

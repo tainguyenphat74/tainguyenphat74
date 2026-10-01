@@ -1,4 +1,4 @@
-import {land,buildings,circles,entrances} from './world.js';
+import {land,buildings,circles,entrances,fences} from './world.js';
 export {entrances};
 export const radius=.28, speed=3.2;
 function inside(p){let yes=false;for(let i=0,j=land.length-1;i<land.length;j=i++){const [x,z]=land[i],[a,b]=land[j];if((z>p.z)!==(b>p.z)&&p.x<(a-x)*(p.z-z)/(b-z)+x)yes=!yes;}return yes;}
@@ -7,7 +7,7 @@ export function walkable(p){
  if(!Number.isFinite(p.x)||!Number.isFinite(p.z)||!inside(p))return false;
  if(land.some((a,i)=>edgeDistance(p,a,land[(i+1)%land.length])<radius))return false;
  if(circles.some(c=>Math.hypot(p.x-c.x,p.z-c.z)<c.r+radius))return false;
- return !buildings.some(b=>Math.hypot(Math.max(Math.abs(p.x-b.x)-b.w/2,0),Math.max(Math.abs(p.z-b.z)-b.d/2,0))<radius);
+ return ![...buildings,...fences].some(b=>Math.hypot(Math.max(Math.abs(p.x-b.x)-b.w/2,0),Math.max(Math.abs(p.z-b.z)-b.d/2,0))<radius);
 }
 export function move(p,d,seconds){
  const length=Math.hypot(d.x,d.z);if(!length||!Number.isFinite(seconds))return {...p};
@@ -26,7 +26,7 @@ export function route(start,goal){
  for(const [dx,dz] of [[1,0],[-1,0],[0,1],[0,-1],[1,1],[1,-1],[-1,1],[-1,-1]]){const q=nodes.get(`${p.x*2+dx},${p.z*2+dz}`);if(q&&!previous.has(q)&&clear(p,q)){previous.set(q,p);queue.push(q);}}}return [];
 }
 export function createWalker(){let path=[],pending=null;return {
- position:{x:0,z:4},facing:0,walking:false,
+ position:{x:3,z:4},facing:0,walking:false,
  stop(){path=[];pending=null;this.walking=false;},
  nearby(){return Object.keys(entrances).find(id=>Math.hypot(this.position.x-entrances[id].x,this.position.z-entrances[id].z)<1.2)||null;},
  interact(){return this.nearby();},

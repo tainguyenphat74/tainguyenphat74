@@ -8,8 +8,8 @@ export function createInput(canvas){const keys=new Set();return {
  stop(callback){keys.clear();callback();},
  direction(yaw){let x=0,z=0;for(const k of keys){x+=vectors[k][0];z+=vectors[k][1];}return cameraDirection(x,z,yaw);}
  };}
-export function bindKeyboard({doc,win,canvas,input,blocked,stop,interact}){
- doc.addEventListener('keydown',e=>{if(input.down(e,blocked())){e.preventDefault();return;}if(e.target===canvas&&!blocked()&&!e.ctrlKey&&!e.metaKey&&!e.altKey&&!e.repeat&&(e.key.toLowerCase()==='e'||e.key==='Enter'))interact(e);});
+export function bindKeyboard({doc,win,canvas,input,blocked,stop,farm=()=>{}}){
+ doc.addEventListener('keydown',e=>{if(input.down(e,blocked())){e.preventDefault();return;}if(e.target===canvas&&!blocked()&&!e.ctrlKey&&!e.metaKey&&!e.altKey&&!e.repeat&&e.key.toLowerCase()==='f'){e.preventDefault();farm();return;}});
  doc.addEventListener('keyup',e=>input.up(e.key));
  doc.addEventListener('focusin',e=>{if(e.target!==canvas)stop();});
  win.addEventListener('blur',stop);
