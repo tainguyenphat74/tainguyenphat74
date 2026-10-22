@@ -52,10 +52,17 @@ h2 { font-size: 14px; font-weight: 400; margin: 0 0 17px; color: var(--ink); }
 .views { margin-top: 22px; font-size: 12px; color: var(--muted); }
 .skip-link { position: absolute; top: 8px; left: 16px; transform: translateY(-150%); padding: 8px 12px; background: var(--ink); color: var(--bg); border-radius: 4px; }
 .skip-link:focus { transform: translateY(0); }
-.theme-switcher { display: flex; gap: 4px; margin-top: 36px; }
-.theme-switcher button { font: inherit; font-size: 12px; min-height: 44px; padding: 8px 12px; border: 1px solid transparent; border-radius: 6px; background: transparent; color: var(--muted); cursor: pointer; }
-.theme-switcher button:hover { color: var(--ink); background: var(--hover); }
-.theme-switcher button[aria-pressed="true"] { border-color: var(--rule); color: var(--ink); background: var(--hover); }
+.theme-dropdown { position: relative; width: max-content; margin-top: 36px; }
+.theme-dropdown summary { display: flex; align-items: center; gap: 9px; min-height: 44px; padding: 8px 13px; border: 1px solid var(--rule); border-radius: 8px; color: var(--soft); background: var(--bg); font-size: 13px; cursor: pointer; list-style: none; user-select: none; }
+.theme-dropdown summary::-webkit-details-marker { display: none; }
+.theme-dropdown summary:hover { color: var(--ink); background: var(--hover); }
+.theme-dropdown summary:focus-visible { outline: 2px solid var(--ink); outline-offset: 4px; }
+.theme-dropdown[open] .chevron { transform: rotate(180deg); }
+.theme-options { position: absolute; bottom: calc(100% + 8px); left: 0; z-index: 5; min-width: 172px; padding: 5px; border: 1px solid var(--rule); border-radius: 10px; background: var(--bg); box-shadow: 0 8px 28px #0002; }
+.theme-options button { display: flex; align-items: center; justify-content: space-between; gap: 24px; width: 100%; min-height: 44px; padding: 9px 11px; border: 0; border-radius: 6px; background: transparent; color: var(--soft); font: inherit; font-size: 13px; text-align: left; cursor: pointer; }
+.theme-options button:hover, .theme-options button[aria-pressed="true"] { color: var(--ink); background: var(--hover); }
+.theme-check { visibility: hidden; }
+.theme-options button[aria-pressed="true"] .theme-check { visibility: visible; }
 @media (max-width: 600px) {
   main { padding-top: 54px; }
   h1 { font-size: 30px; }

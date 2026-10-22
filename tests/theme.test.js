@@ -10,7 +10,7 @@ function setup(saved, blocked = false) {
   const media = { matches: false, addEventListener(k, cb) { mediaEvents[k] = cb; } };
   let stored = saved;
   vm.runInNewContext(source, {
-    document: { documentElement: root, querySelector: () => meta, querySelectorAll: () => buttons, addEventListener(k, cb) { events[k] = cb; } },
+    document: { documentElement: root, querySelector: selector => selector === '.theme-dropdown' ? null : meta, querySelectorAll: () => buttons, addEventListener(k, cb) { events[k] = cb; } },
     window: { matchMedia: () => media, localStorage: { getItem() { if (blocked) throw Error(); return stored; }, setItem(k, v) { if (blocked) throw Error(); stored = v; } }, addEventListener(k, cb) { windowEvents[k] = cb; } },
   });
   events.DOMContentLoaded();

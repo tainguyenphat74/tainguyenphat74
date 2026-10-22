@@ -27,11 +27,26 @@
     apply();
   });
   document.addEventListener('DOMContentLoaded', () => {
+    const dropdown = document.querySelector('.theme-dropdown');
+    const trigger = dropdown?.querySelector('summary');
+    document.addEventListener('click', event => {
+      if (dropdown && !dropdown.contains(event.target)) dropdown.open = false;
+    });
+    document.addEventListener('keydown', event => {
+      if (event.key === 'Escape' && dropdown?.open) {
+        dropdown.open = false;
+        trigger?.focus();
+      }
+    });
     document.querySelectorAll('[data-theme-mode]').forEach(button => {
       button.addEventListener('click', () => {
         mode = button.dataset.themeMode;
         try { window.localStorage.setItem(key, mode); } catch { /* Optional persistence. */ }
         apply();
+        if (dropdown) {
+          dropdown.open = false;
+          trigger?.focus();
+        }
       });
     });
     apply();

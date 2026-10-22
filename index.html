@@ -63,11 +63,14 @@
       <a class="contact" href="mailto:nguyentai2760@gmail.com">nguyentai2760@gmail.com ↗</a>
       <p class="views" id="views" hidden></p>
     </section>
-    <div class="theme-switcher" role="group" aria-label="Color theme">
-      <button type="button" data-theme-mode="dark" aria-pressed="false">Dark</button>
-      <button type="button" data-theme-mode="light" aria-pressed="false">Light</button>
-      <button type="button" data-theme-mode="system" aria-pressed="true">System</button>
-    </div>
+    <details class="theme-dropdown">
+      <summary><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 4a8 8 0 0 1 0 16Z" fill="currentColor" stroke="none"/></svg><span>Theme</span><svg class="chevron" viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="m4 6 4 4 4-4"/></svg></summary>
+      <div class="theme-options" role="group" aria-label="Color theme">
+        <button type="button" data-theme-mode="light" aria-pressed="false"><span>Light</span><span class="theme-check" aria-hidden="true">✓</span></button>
+        <button type="button" data-theme-mode="dark" aria-pressed="false"><span>Dark</span><span class="theme-check" aria-hidden="true">✓</span></button>
+        <button type="button" data-theme-mode="system" aria-pressed="true"><span>System</span><span class="theme-check" aria-hidden="true">✓</span></button>
+      </div>
+    </details>
   </main>
   <script src="main.js"></script>
   <script>window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };</script>
