@@ -14,12 +14,14 @@
     const res = await fetch('/api/views', { method: counted ? 'GET' : 'POST' });
     if (!res.ok) return;
     const { count } = await res.json();
-    if (typeof count !== 'number') return;
+    if (!Number.isSafeInteger(count) || count < 0) return;
 
     try {
       window.localStorage.setItem(VIEW_COUNT_KEY, '1');
     } catch { /* storage may be blocked by privacy settings */ }
-    el.textContent = `👀 ${count.toLocaleString('en-US')} views`;
+    const number = document.getElementById('view-count');
+    if (!number) return;
+    number.textContent = count.toLocaleString('en-US');
     el.hidden = false;
   } catch { /* offline or endpoint down — leave the line hidden */ }
 })();

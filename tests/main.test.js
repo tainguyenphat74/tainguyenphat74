@@ -15,8 +15,9 @@ function makeStorage(initial = {}) {
 
 async function runPage(storage, calls) {
   const views = { hidden: true, textContent: '' };
+  const number = { textContent: '' };
   const context = {
-    document: { getElementById(id) { return id === 'views' ? views : null; } },
+    document: { getElementById(id) { return id === 'views' ? views : id === 'view-count' ? number : null; } },
     window: { matchMedia() { return { matches: false }; }, localStorage: storage },
     localStorage: storage,
     sessionStorage: makeStorage(),
@@ -28,6 +29,8 @@ async function runPage(storage, calls) {
   vm.createContext(context);
   vm.runInContext(source, context);
   await new Promise(resolve => setImmediate(resolve));
+  assert.equal(number.textContent, '10');
+  assert.equal(views.hidden, false);
 }
 
 test('counts the first visit and reads on later visits using persistent localStorage', async () => {
