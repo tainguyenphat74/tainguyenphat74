@@ -1,11 +1,8 @@
 {
-  "name": "little-harvest",
+  "name": "tainguyenphat74-portfolio",
   "private": true,
   "type": "module",
   "scripts": {
     "test": "node --test"
-  },
-  "dependencies": {
-    "three": "^0.186.1"
   }
 }
