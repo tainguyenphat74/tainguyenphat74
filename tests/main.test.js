@@ -14,18 +14,9 @@ function makeStorage(initial = {}) {
 }
 
 async function runPage(storage, calls) {
-  const listeners = {};
-  const print = {
-    parentElement: {
-      addEventListener(name, callback) { listeners[name] = callback; },
-    },
-    classList: { add() {}, remove() {} },
-    style: { setProperty() {} },
-    getBoundingClientRect() { return { left: 0, top: 0, width: 100, height: 100 }; },
-  };
   const views = { hidden: true, textContent: '' };
   const context = {
-    document: { getElementById(id) { return id === 'print' ? print : views; } },
+    document: { getElementById(id) { return id === 'views' ? views : null; } },
     window: { matchMedia() { return { matches: false }; }, localStorage: storage },
     localStorage: storage,
     sessionStorage: makeStorage(),
